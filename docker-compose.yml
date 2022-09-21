@@ -1,0 +1,77 @@
+version: '3'
+
+networks:
+  monreseau:
+    external: false
+
+services:
+
+  db:
+
+    image: 'postgres'
+
+    container_name: fewnu_postgres
+
+    restart: always
+
+    environment:
+      - POSTGRES_DB=docker_fewnu
+      - POSTGRES_USER=sultan
+      - POSTGRES_PASSWORD=jepasse
+
+    networks:
+      - monreseau
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  web:  
+
+    build: .
+
+    container_name: fewnu_app
+
+    restart: always
+
+    ports:
+      - "8000:8000"
+
+    networks:
+      - monreseau
+
+    volumes:
+      - sitestatics:/usr/src/app/static_assets/                                                                                                                                                                                     
+      - sitemedias:/usr/src/app/medias/
+
+    depends_on:
+      - db
+    # command: ["python3","manage.py","runserver"]
+    # command: ["./docker-entrypoint.sh"]
+
+    links:
+      - "db:database"
+
+  nginx:
+
+    image: nginx:1.19-alpine
+
+    container_name: fewnu_nginx
+
+    networks:
+      - monreseau
+
+    volumes:
+      - sitestatics:/home/app/web/staticfiles
+      - sitemedias:/home/app/web/mediafiles
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+    depends_on:
+      - web
+
+    ports:
+      - '85:85'
+
+volumes:
+    postgres-data:   
+    sitestatics:
+    sitemedias:
