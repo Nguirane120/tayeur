@@ -113,10 +113,3 @@ class DepenseSerializer(serializers.ModelSerializer):
         model = Depense
         fields =('id','user','user_info','fournisseur','fournisseur_info','list_products','date')
         # depth = 1
-
-# statistic 
-class StatisticSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Statistic
-        fields ='__all__'
-        depth = 1

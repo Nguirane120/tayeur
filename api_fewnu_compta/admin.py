@@ -9,7 +9,6 @@ from .models import Depense
 from .models import Article
 from .models import DepenseArticle
 from .models import Company
-from .models import Statistic
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
@@ -42,8 +41,6 @@ class DepenseArticleAdmin(admin.ModelAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     pass
 
-class StatisticAdmin(admin.ModelAdmin):
-    pass
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Customer, CustomerAdmin)
@@ -55,4 +52,3 @@ admin.site.register(Depense, DepenseAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(DepenseArticle, DepenseArticleAdmin)
 admin.site.register(Company, CompanyAdmin)
-admin.site.register(Statistic, StatisticAdmin)

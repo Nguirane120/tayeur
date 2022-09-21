@@ -3,18 +3,18 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 import io, csv, pandas as pd
 from django.db.models import Avg, Count, Min, Sum
-from ..models import Statistic
 from ..models import Depense
+from rest_framework.views import APIView
 from ..models import Vente
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-class StatisticAPIListView(generics.CreateAPIView):
+class StatisticAPIListView(APIView):
     """
     GET api/v1/statistic/
     """
     # queryset = Statistic.objects.all()
-    serializer_class = StatisticSerializer
+    # serializer_class = StatisticSerializer
 
     def get(self, request, format=None):
         # depenses = Depense.objects.values('products_id.category').annotate(dcount=Count('products.category')).order_by()
