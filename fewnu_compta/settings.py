@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'docker_fewnu',
+        'NAME': 'docker',
         'USER': 'sultan',
         'PASSWORD': 'jepasse',
         'HOST': 'db',

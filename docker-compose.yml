@@ -15,7 +15,7 @@ services:
     restart: always
 
     environment:
-      - POSTGRES_DB=docker_fewnu
+      - POSTGRES_DB=docker
       - POSTGRES_USER=sultan
       - POSTGRES_PASSWORD=jepasse
 
@@ -63,12 +63,20 @@ services:
     volumes:
       - sitestatics:/home/app/web/staticfiles
       - sitemedias:/home/app/web/mediafiles
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro  
 
     depends_on:
       - web
 
     ports:
-      - '80:80'
+      -  89:89
+      -  443:443
+  certbot:
+      image: certbot/certbot:latest
+      volumes:
+        - ./certbot/www/:/var/www/certbot/:rw
+        - ./certbot/conf/:/etc/letsencrypt/:rw
 
 volumes:
     postgres-data:   
