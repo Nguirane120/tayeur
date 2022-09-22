@@ -53,7 +53,7 @@ services:
 
   nginx:
 
-    image: nginx:1.19-alpine
+    build: ./nginx
 
     container_name: fewnu_nginx
 
@@ -63,13 +63,12 @@ services:
     volumes:
       - sitestatics:/home/app/web/staticfiles
       - sitemedias:/home/app/web/mediafiles
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
     depends_on:
       - web
 
     ports:
-      - '85:85'
+      - '80:80'
 
 volumes:
     postgres-data:   
