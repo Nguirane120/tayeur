@@ -98,11 +98,11 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'docker',
+        'NAME': 'fewnu',
         'USER': 'sultan',
         'PASSWORD': 'jepasse',
-        'HOST': 'db',
-        # 'HOST': '127.0.0.1', for local
+        # 'HOST': 'db',
+        'HOST': 'localhost', #for local
         'PORT': '5432',
     }
 }
