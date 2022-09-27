@@ -2,6 +2,7 @@
 image: python:3.8
 stages:
   - test
+  - deploy
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -25,24 +26,15 @@ test_django:
     - pip install -U -r requirements.txt
     - deactivate
 
-run:
-  script:
-    - python setup.py bdist_wheel
-    # an alternative approach is to install and run:
-    - pip install dist/*
-    # run the command here
-  artifacts:
-    paths:
-      - dist/*.whl
 
-pages:
+
+deploy_to_test:
+  stage: deploy
   script:
-    - pip install sphinx sphinx-rtd-theme
-    - cd doc
-    - make html
-    - mv build/html/ ../public/
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - docker stop fewnu_compta || true
+    - docker update --restart=no fewnu_compta || true
+    - docker rm todo_backend_old || true
+    - docker rename fewnu_compta fewnu_compta_old || true
+    - docker run -d --name fewnu_compta --restart=always -p 8000:8000 $CI_REGISTRY_IMAGE:dev
+  tags:
+    - fewnu-tech
