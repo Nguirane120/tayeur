@@ -1,5 +1,7 @@
 
 image: python:3.8
+stages:
+  - test
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -16,13 +18,8 @@ cache:
     - .cache/pip
     - env/
 
-before_script:
-  - python --version  # For debugging
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
-
-test:
+test_django:
+  stage: test
   script:
     - source env/bin/activate
     - pip install -U -r requirements.txt
