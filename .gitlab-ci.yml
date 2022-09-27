@@ -26,8 +26,6 @@ test_django:
     - pip install -U -r requirements.txt
     - deactivate
 
-
-
 deploy_to_test:
   stage: deploy
   script:
@@ -36,5 +34,4 @@ deploy_to_test:
     - docker rm todo_backend_old || true
     - docker rename fewnu_compta fewnu_compta_old || true
     - docker run -d --name fewnu_compta --restart=always -p 8000:8000 $CI_REGISTRY_IMAGE:dev
-  tags:
-    - fewnu-tech
+
