@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from django.db.models import Avg, Count, Min, Sum
 import json 
+from api_fewnu_compta.models import Depense
 
 # clients 
 
@@ -24,7 +25,11 @@ class DepenseAPIView(generics.CreateAPIView):
         serializer = DepenseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=201)
+            create_reference = Depense.create_reference(serializer.data)
+            serializerDepense = DepenseSerializer(data=create_reference)
+            if serializerDepense.is_valid():
+                serializerDepense.save()
+            return Response(serializerDepense.data,status=201)
         return Response(serializer.errors, status=400)
 
 class DepenseByIdAPIView(generics.CreateAPIView):

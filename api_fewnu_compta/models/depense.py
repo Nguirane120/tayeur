@@ -22,6 +22,7 @@ class Depense(models.Model):
         choices=VENTE_STATUS,
         default=ENCOURS,
     )
+    matricule =  models.CharField(max_length=32,null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)
     products = models.ManyToManyField(Product, through='DepenseArticle')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -29,6 +30,12 @@ class Depense(models.Model):
     fournisseur = models.ForeignKey(Fournisseur, on_delete=models.CASCADE)
     total = models.IntegerField(null=True, blank=True)
     archived = models.BooleanField(default=False)
+
+    def create_reference(self):
+        matricule = "DP00"+ str(self['id'])
+        self["matricule"] = matricule   
+        return self
+
 
     class Meta:
         """
