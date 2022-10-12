@@ -10,7 +10,7 @@ def send_email(request):
     text_content = 'test text content avec le fichier .'
     html_content = '<p>This is an <strong>important</strong> message.</p>'
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_file('media/images/login.png')
+    msg.attach_file('media/facture/login.png')
     msg.send()
     # subject = request.POST.get('subject', '')
     # message = request.POST.get('message', '')
@@ -22,3 +22,27 @@ def send_email(request):
     #     return HttpResponse('success.')
     # except BadHeaderError:
     #     return HttpResponse('Invalid header found.')
+
+# class SendMailView(APIView):
+
+#     def post(self, request,client, file):
+
+#         print("request data ",request.data)
+        
+#         # serializer = self.get_serializer(data=request.data)
+#         # serializer.is_valid(raise_exception=True)
+#         # csv_file = serializer.validated_data['csv_file']
+#         # reader = pd.read_csv(csv_file, encoding = "utf-8",error_bad_lines=False)
+#         # for _, row in reader.iterrows():
+#         #     new_file = Customer(
+#         #         firstName= row["firstName"],
+#         #         lastName= row['lastName'],
+#         #         telephone= row["telephone"],
+#         #         adresse= row["adresse"],
+#         #         email= row["email"],
+#         #         user_id = user
+#         #         )
+#         #     new_file.save()
+
+#         return Response({"status": "success"},
+#                         status.HTTP_201_CREATED)

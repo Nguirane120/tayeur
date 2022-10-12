@@ -43,8 +43,11 @@ urlpatterns = [
             # company 
             path('company/', views.CompanyAPIView.as_view()),
             path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),
+            
 
             path('mail/', views.send_email),
+            # path('mail/fac/', views.SendMailView.as_view()),
+            
             
 
             # fournisseur 
