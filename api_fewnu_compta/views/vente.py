@@ -1,9 +1,12 @@
 from api_fewnu_compta.serializers import *
+from django.core.mail import BadHeaderError, send_mail
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from django.db.models import Avg, Count, Min, Sum
 import json 
+from rest_framework.views import APIView
+from django.core.mail import EmailMultiAlternatives
 
 # clients 
 
@@ -71,3 +74,31 @@ class VenteByIdAPIView(generics.CreateAPIView):
         item.archived=True
         item.save()
         return Response({"message": "deleted"},status=204)
+
+class SendVenteMailAPIView(APIView):
+    queryset = Vente.objects.all()
+    serializer_class = VenteSerializer
+
+    def get(self, request, id, format=None):
+        try:
+            item = Vente.objects.filter(archived=False).get(pk=id)
+            serializer = VenteSerializer(item)
+            firstNameClient = serializer.data['client_info']['firstName']
+            lastNameClient = serializer.data['client_info']['lastName']
+            emailClient = serializer.data['client_info']['email']
+            facture = emailClient = serializer.data['facture']
+
+            # send email 
+            subject, from_email, to = 'Votre facture de fewnu', 'boymahstar@gmail.com', 'mahmoudbarrysn@gmail.com'
+            text_content = 'Bonjour ' + firstNameClient+ " " + lastNameClient        
+            html_content = '<p>This is an <strong>important</strong> message.</p>'
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_file("."+facture)
+            msg.send()
+
+            return Response(serializer.data)
+        except Vente.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)

@@ -95,7 +95,7 @@ class VenteSerializer(serializers.ModelSerializer):
     list_products = ArticleSerializer(source='articles', many=True,read_only=True)
     class Meta:
         model = Vente
-        fields =('id','user','user_info','client','client_info','list_products','date','status')
+        fields =('id','user','facture','user_info','client','client_info','list_products','date','status')
         # depth = 1
 
 class DepenseArticleSerializer(serializers.ModelSerializer):
@@ -111,5 +111,6 @@ class DepenseSerializer(serializers.ModelSerializer):
     list_products = DepenseArticleSerializer(source='depense_aticle', many=True,read_only=True)
     class Meta:
         model = Depense
-        fields =('id','matricule','user','user_info','fournisseur','fournisseur_info','list_products','date')
+        fields =('id','matricule','status','user','user_info','fournisseur','fournisseur_info','list_products','date')
         # depth = 1
+        

@@ -27,6 +27,7 @@ class Vente(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     client = models.ForeignKey(Customer, on_delete=models.CASCADE)
     total = models.IntegerField(null=True, blank=True)
+    facture = models.FileField(upload_to='images/ventes/',null=True, blank=True)
     archived = models.BooleanField(default=False)
 
     class Meta:

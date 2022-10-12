@@ -31,12 +31,6 @@ class Depense(models.Model):
     total = models.IntegerField(null=True, blank=True)
     archived = models.BooleanField(default=False)
 
-    def create_reference(self):
-        matricule = "DP00"+ str(self['id'])
-        self["matricule"] = matricule   
-        return self
-
-
     class Meta:
         """
         For models split into separate files, specify table name and app name.

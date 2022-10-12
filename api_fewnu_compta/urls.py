@@ -68,6 +68,8 @@ urlpatterns = [
             # vente 
             path('vente/', views.VenteAPIView.as_view()),
             path('vente/<int:id>/', views.VenteByIdAPIView.as_view()),
+            path('vente/mail/<int:id>/', views.SendVenteMailAPIView.as_view()),
+            # path('statistic/<str:grouped_by>/', views.StatisticByDateAPIView.as_view({'get': 'list'})),
 
 
             # article 

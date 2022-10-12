@@ -25,11 +25,15 @@ class DepenseAPIView(generics.CreateAPIView):
         serializer = DepenseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            create_reference = Depense.create_reference(serializer.data)
-            serializerDepense = DepenseSerializer(data=create_reference)
-            if serializerDepense.is_valid():
-                serializerDepense.save()
-            return Response(serializerDepense.data,status=201)
+            depense = Depense.objects.get(pk= serializer.data['id'])
+            # create reference based id 
+            matricule = "DP00"+ str(serializer.data['id'])
+            # update reference 
+            depense.matricule = matricule
+            depense.save() # save update 
+
+            serializer = DepenseSerializer(depense)
+            return Response(serializer.data,status=201)
         return Response(serializer.errors, status=400)
 
 class DepenseByIdAPIView(generics.CreateAPIView):
