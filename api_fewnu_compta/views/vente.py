@@ -86,10 +86,11 @@ class SendVenteMailAPIView(APIView):
             firstNameClient = serializer.data['client_info']['firstName']
             lastNameClient = serializer.data['client_info']['lastName']
             emailClient = serializer.data['client_info']['email']
-            facture = emailClient = serializer.data['facture']
+            print("emailClient",emailClient)
+            facture = serializer.data['facture']
 
             # send email 
-            subject, from_email, to = 'Votre facture de fewnu', 'boymahstar@gmail.com', 'mahmoudbarrysn@gmail.com'
+            subject, from_email, to = 'Votre facture de fewnu', 'contact@fewnu.app', emailClient
             text_content = 'Bonjour ' + firstNameClient+ " " + lastNameClient        
             html_content = '<p>This is an <strong>important</strong> message.</p>'
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])

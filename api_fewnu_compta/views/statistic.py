@@ -64,56 +64,58 @@ class StatisticAPIListView(APIView):
                 
             })
     
-class StatisticByDateAPIView(viewsets.ModelViewSet):
+# class StatisticByDateAPIView(viewsets.ModelViewSet):
 
-    # def get(self, request, id, format=None):
-    serializer_class = VenteSerializer
-    queryset = Vente.objects.all()
-    filter_fields = {'created_at': ['iexact', 'lte', 'gte']}
-    http_method_names = ['get', 'post', 'head']
+#     # def get(self, request, id, format=None):
+#     serializer_class = VenteSerializer
+#     queryset = Vente.objects.all()
+#     filter_fields = {'date': ['iexact', 'lte', 'gte']}
+#     http_method_names = ['get', 'post', 'head']
 
-    GROUP_CASTING_MAP = {  # Used for outputing the reset datetime when grouping
-        'day': Cast(TruncDate('created_at'), output_field=DateTimeField()),
-        'month': Cast(TruncMonth('created_at'), output_field=DateTimeField()),
-        'week': Cast(TruncWeek('created_at'), output_field=DateTimeField()),
-        'year': Cast(TruncYear('created_at'), output_field=DateTimeField()),
-    }
+#     GROUP_CASTING_MAP = {  # Used for outputing the reset datetime when grouping
+#         'day': Cast(TruncDate('date'), output_field=DateTimeField()),
+#         'month': Cast(TruncMonth('date'), output_field=DateTimeField()),
+#         'week': Cast(TruncWeek('date'), output_field=DateTimeField()),
+#         'year': Cast(TruncYear('date'), output_field=DateTimeField()),
+#     }
 
-    GROUP_ANNOTATIONS_MAP = {  # Defines the fields used for grouping
-        'day': {
-            'day': TruncDay('created_at'),
-            'month': TruncMonth('created_at'),
-            'year': TruncYear('created_at'),
-        },
-        'week': {
-            'week': TruncWeek('created_at')
-        },
-        'month': {
-            'month': TruncMonth('created_at'),
-            'year': TruncYear('created_at'),
-        },
-        'year': {
-            'year': TruncYear('created_at'),
-        },
-    }
+#     GROUP_ANNOTATIONS_MAP = {  # Defines the fields used for grouping
+#         'day': {
+#             'day': TruncDay('date'),
+#             'month': TruncMonth('date'),
+#             'year': TruncYear('date'),
+#         },
+#         'week': {
+#             'week': TruncWeek('date')
+#         },
+#         'month': {
+#             'month': TruncMonth('date'),
+#             'year': TruncYear('date'),
+#         },
+#         'year': {
+#             'year': TruncYear('date'),
+#         },
+#     }
 
-    def list(self, request, *args, **kwargs):
-        group_by_field = request.GET.get('group_by', None)
-        if group_by_field and group_by_field not in self.GROUP_CASTING_MAP.keys():  # validate possible values
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+#     def list(self, request, *args, **kwargs):
+#         # group_by_field = request.GET.get('group_by', None)
+#         group_by_field = "day"
+#         print("group_by_field",group_by_field)
+#         if group_by_field and group_by_field not in self.GROUP_CASTING_MAP.keys():  # validate possible values
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = self.filter_queryset(self.get_queryset())
+#         queryset = self.filter_queryset(self.get_queryset())
 
-        if group_by_field:
-            queryset = queryset.annotate(**self.GROUP_ANNOTATIONS_MAP[group_by_field]) \
-                .values(*self.GROUP_ANNOTATIONS_MAP[group_by_field]) \
-                .annotate(rank=Avg('rank'), created_at=self.GROUP_CASTING_MAP[group_by_field]) \
-                .values('rank', 'created_at')
+#         if group_by_field:
+#             queryset = queryset.annotate(**self.GROUP_ANNOTATIONS_MAP[group_by_field]) \
+#                 .values(*self.GROUP_ANNOTATIONS_MAP[group_by_field]) \
+#                 .annotate(articles=Avg('articles'), date=self.GROUP_CASTING_MAP[group_by_field]) \
+#                 .values('articles', 'date')
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+#         page = self.paginate_queryset(queryset)
+#         if page is not None:
+#             serializer = self.get_serializer(page, many=True)
+#             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
