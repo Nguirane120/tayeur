@@ -56,3 +56,28 @@ class UserById(generics.CreateAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
+
+class UserUpdatePassword(generics.CreateAPIView):
+    # permission_classes = (
+    #     permissions.IsAuthenticated,
+    # )
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def put(self, request, id, format=None):
+        try:
+            item = User.objects.filter(archived=False).get(pk=id)
+            password = request.data['password']
+            item.set_password(password)
+            item.save()
+        except User.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404) 
+        
+        # serializer = UserSerializer(item, data=request.data, partial= True)
+        # if serializer.is_valid(raise_exception=True):
+            # serializer.save()
+            # return Response(serializer.data)
+        return Response("serializer.errors", status=200)

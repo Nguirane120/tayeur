@@ -31,6 +31,7 @@ urlpatterns = [
             # user 
             path('users/', views.UserAPIView.as_view()),
             path('user/<int:id>', views.UserById.as_view()),
+            path('user/password/<int:id>', views.UserUpdatePassword.as_view()),
             path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name="swagger-schema"),
 
             # clients 
