@@ -91,21 +91,21 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 # for herokuapp
-DATABASES = { 'default': dj_database_url.config() }
+# DATABASES = { 'default': dj_database_url.config() }
 
 
 # for local 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'fewnu',
-#         'USER': 'sultan',
-#         'PASSWORD': 'jepasse',
-#         # 'HOST': 'db',
-#         'HOST': 'localhost', #for local
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'fewnu',
+        'USER': 'sultan',
+        'PASSWORD': 'jepasse',
+        # 'HOST': 'db',
+        'HOST': 'localhost', #for local
+        'PORT': '5432',
+    }
+}
 
 # for docker 
 # DATABASES = {
