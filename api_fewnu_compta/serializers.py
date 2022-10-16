@@ -111,6 +111,6 @@ class DepenseSerializer(serializers.ModelSerializer):
     list_products = DepenseArticleSerializer(source='depense_aticle', many=True,read_only=True)
     class Meta:
         model = Depense
-        fields =('id','matricule','status','user','user_info','fournisseur','fournisseur_info','list_products','date')
+        fields =('id','image','matricule','status','user','user_info','fournisseur','fournisseur_info','list_products','date')
         # depth = 1
         
