@@ -82,6 +82,15 @@ urlpatterns = [
             path('depense/', views.DepenseAPIView.as_view()),
             path('depense/<int:id>/', views.DepenseByIdAPIView.as_view()),
 
+            # album 
+            path('album/', views.AlbumAPIView.as_view()),
+            path('album/<int:id>/', views.AlbumByIdAPIView.as_view()),
+
+             # photos
+            path('photo/', views.PhotoAPIView.as_view()),
+            path('photo/<int:id>/', views.PhotoByIdAPIView.as_view()),
+            path('photos/album/<int:id>/', views.getListPhotosByAlbumId.as_view()),
+
             # achat  
             path('achat/', views.DepenseArticleAPIListView.as_view()),
             path('achat/<int:id>/', views.DepenseArticleByIdAPIView.as_view()),
@@ -97,6 +106,7 @@ urlpatterns = [
             path('employees/', EmployeeList.as_view()),
             path('emplyees/', CreateEmployee.as_view()),
             path('employees/<int:pk>', DetailEmployee.as_view()),
+
         ])
     ),
 ]

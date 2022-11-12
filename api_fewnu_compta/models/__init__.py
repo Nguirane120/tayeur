@@ -10,3 +10,5 @@ from .depense_article import *
 from .company import *
 from .employee import Employee
 from .paiement import Paiement 
+from .album import Album 
+from .photos import Photo 

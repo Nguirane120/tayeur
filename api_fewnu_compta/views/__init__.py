@@ -12,4 +12,6 @@ from .depense_article import *
 from .company import *
 from .mail import *
 from .statistic import *
+from .album import *
+from .photos import *
 # from .cookies import *
