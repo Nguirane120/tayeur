@@ -9,7 +9,7 @@ from ..serializers import EmployeeSerializer
 class EmployeeList(APIView):
 
     def get(self, request, format=None):
-        employees = Employee.objects.all()
+        employees = Employee.objects.filter(archived=False).all()
         serializer = EmployeeSerializer(employees, many=True)
 
         return Response(serializer.data, status=200)
@@ -26,18 +26,23 @@ class CreateEmployee(generics.CreateAPIView):
             return Response(serializer.data, status=200)
         return Response(serializer.errors, status=400)
 
-class DetailEmployee(APIView):
+class DetailEmployee(generics.UpdateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-    def get(self,pk, request, format=None):
-        employee = self.get_object(pk)
-        serializer = EmployeeSerializer(employee)
+    def get(self, request, pk, format=None):
+        try:
+            item = Employee.objects.filter(archived=False).get(pk=pk)
+            serializer = EmployeeSerializer(item)
+            return Response(serializer.data)
+        except Employee.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
 
-        return Response(serializer.data, status=200)
-
-    def put(self, pk, request, format=None):
-        employee = self.get_object(pk)
+    def put(self, request, pk,format=None):
+        employee = Employee.objects.get(pk=pk)
         serializer = EmployeeSerializer(employee, data=request.data)
 
         if serializer.is_valid():
@@ -47,10 +52,16 @@ class DetailEmployee(APIView):
 
         return Response(serializer.errors, status=400)
 
-    def delete(self, pk, request, format=None):
-        employee = self.get_object(pk)
-        employee.delete()
-
-        return Response(status=200)
+    def delete(self, request, *args, **kwargs):
+        try:
+            employee = Employee.objects.filter(archived=False).get(id=kwargs["pk"])
+        except Employee.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+        employee.archived=True
+        employee.save()
+        return Response({"message": "deleted"},status=204)
 
 
