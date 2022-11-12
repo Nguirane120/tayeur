@@ -98,9 +98,9 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tayeur',
-        'USER': 'alioune',
-        'PASSWORD': 'passer123',
+        'NAME': 'fewnu',
+        'USER': 'sultan',
+        'PASSWORD': 'jepasse',
         # 'HOST': 'db',
         'HOST': 'localhost', #for local
         'PORT': '5432',
@@ -225,12 +225,13 @@ MIDDLEWARE_CLASSES = [
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 
-REST_FRAMEWORK  ={
-# anyone can visit it and input data
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-   ]
-}
+# REST_FRAMEWORK  ={
+# # anyone can visit it and input data
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny'
+#    ]
+# }
+
 
 # SMTP Configuration 
 
