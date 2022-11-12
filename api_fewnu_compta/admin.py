@@ -10,6 +10,7 @@ from .models import Article
 from .models import DepenseArticle
 from .models import Company
 from .models import Employee
+from .models import Paiement
 
 class UserAdmin(admin.ModelAdmin):
     pass
@@ -53,3 +54,4 @@ admin.site.register(Article, ArticleAdmin)
 admin.site.register(DepenseArticle, DepenseArticleAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Employee)
+admin.site.register(Paiement)
