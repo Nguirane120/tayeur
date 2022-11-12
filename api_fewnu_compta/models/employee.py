@@ -7,7 +7,7 @@ class Employee(models.Model):
     telephone = models.CharField(max_length=100)
     email = models.EmailField()
     addresse = models.CharField(max_length=125)
-    numero_cni = models.IntegerField()
+    numero_cni = models.CharField(max_length=32)
     salaire = models.IntegerField()
     photo = models.ImageField(upload_to='uploads/employee', blank=True)
     contrat = models.CharField(max_length=125)

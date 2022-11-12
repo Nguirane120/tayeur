@@ -43,7 +43,7 @@ class DetailEmployee(generics.UpdateAPIView):
 
     def put(self, request, pk,format=None):
         employee = Employee.objects.get(pk=pk)
-        serializer = EmployeeSerializer(employee, data=request.data)
+        serializer = EmployeeSerializer(employee, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()

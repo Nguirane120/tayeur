@@ -5,38 +5,54 @@ from api_fewnu_compta.models import Paiement
 # from rest_framework.generics import UpdateAPIView
 from rest_framework.decorators import api_view
 
-#Création d'un paiement
-@api_view(['POST'])
-def CreationPaiementAPIView(request):
-    paiement = PaiementSerializer(data=request.data)
-    
-    if Paiement.objects.filter(**request.data).exists():
-        raise serializers.ValidationError('cette donnée existe déjà')
-    # if Paiement.objects.filter(**request.data).none:
-    #     raise serializers.ValidationError('les donnée sont imcomplétes')
 
-    if paiement.is_valid():
+
+class CreationPaiementAPIView(generics.ListCreateAPIView):
+    queryset = Paiement.objects.all()
+    serializer_class = PaiementSerializer
+
+    def get(self, request, format=None):
+        paiement = Paiement.objects.filter(archived=False).all()
+        serializer = PaiementSerializer(paiement, many=True)
+
+        return Response(serializer.data, status=200)
+
+class ModifierPaiementAPIView(generics.UpdateAPIView):
+    queryset = Paiement.objects.all()
+    serializer_class = PaiementSerializer
+
+    def get(self, request, pk, format=None):
+        paiement = Paiement.objects.filter(archived=False).get(pk=pk)
+        serializer = PaiementSerializer(paiement)
+        return Response(serializer.data, status=200)
+
+    def put(self, request, pk,format=None):
+        paiement = Paiement.objects.get(pk=pk)
+        serializer = PaiementSerializer(paiement, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            paiement = Paiement.objects.filter(archived=False).get(id=kwargs["pk"])
+        except Paiement.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+        paiement.archived=True
         paiement.save()
-        return Response(paiement.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "deleted"},status=204)
 
+class getListPaimentByUser(generics.ListCreateAPIView):
+    queryset = Paiement.objects.all()
+    serializer_class = PaiementSerializer
 
-#MModifier paiement
-@api_view(['POST','GET'])
-def ModifierPaiementAPIView(request, pk):
-    paiement = Paiement.objects.get(pk=pk)
-    print("paiement recupere")
-    data = PaiementSerializer(instance=paiement, data=request.data)
-
-    if data.is_valid():
-        print("donnée valide")
-        data.save()
-        return Response(data.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-
-#Liste de paie par employé
-
-
+    def get(self, request, pk, format=None):
+        paiement = Paiement.objects.filter(id_employe=pk).all()
+        serializer = PaiementSerializer(paiement)
+        return Response(serializer.data, status=200)
+ 
