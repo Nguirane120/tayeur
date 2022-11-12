@@ -8,3 +8,5 @@ from .depense import *
 from .article import *
 from .depense_article import *
 from .company import *
+from .employee import Employee
+from .paiement import Paiement 

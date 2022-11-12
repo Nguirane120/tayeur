@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from .user import employe
+from .employee import Employee
 
 
 class Paiement(models.Model):
@@ -11,11 +11,7 @@ class Paiement(models.Model):
             (AVANCE, 'AVANCE'),
 )
     id_employe = models.ForeignKey(
-        Employe, on_delete=models.CASCADE)
+        Employee, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=10,choices=CHOICE_STATUS,default=AVANCE,)
     montant = models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        db_table = "api_fewnu_compta_paiement"
-        app_label = "api_fewnu_compta"
