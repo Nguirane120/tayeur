@@ -60,7 +60,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     admin-compliant permissions.
 
     """
-    phone = models.CharField(max_length=40)
+    phone = models.CharField(max_length=40, unique=True )
     # nom_complet = models.CharField(max_length=100, blank=True)
     firstName = models.CharField(max_length=100, blank=True)
     lastName = models.CharField(max_length=100, blank=True)

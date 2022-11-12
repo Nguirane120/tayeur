@@ -225,12 +225,13 @@ MIDDLEWARE_CLASSES = [
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 
-REST_FRAMEWORK  ={
-# anyone can visit it and input data
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-   ]
-}
+# REST_FRAMEWORK  ={
+# # anyone can visit it and input data
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny'
+#    ]
+# }
+
 
 # SMTP Configuration 
 

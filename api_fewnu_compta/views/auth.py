@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
-
+from api_fewnu_compta.models import User 
 
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -27,14 +27,22 @@ class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
-        email = request.data.get("email", "")
-        password = request.data.get("password", "")
-
-        if not email or not password:
-            return Response(data={"message": "Both email and password are required to connect"},status=400)
+        email = request.data["email"]
+        phone = request.data["phone"]
+        password = request.data["password"]
+        
+        if not password:
+            return Response(data={"message": "Both identifiant and password are required to connect"},status=400)
         else:
             try:
-                user = authenticate(request, email=email, password=password)
+                if phone :
+                    userData = User.objects.get(phone=phone)
+                    print("user data in phone", userData)
+                    user = authenticate(request, email=userData, password=password)
+                elif email :
+                    user = authenticate(request, email=email, password=password)
+                    print("user data in email")
+                print("user",user)
                 if user is not None:
                     login(request, user)
                     # Redirect to a success page.
