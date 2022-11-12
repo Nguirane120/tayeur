@@ -15,3 +15,4 @@ class Paiement(models.Model):
     date = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=10,choices=CHOICE_STATUS,default=AVANCE,)
     montant = models.IntegerField(null=True, blank=True)
+    archived = models.BooleanField(default=False)

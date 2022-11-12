@@ -89,8 +89,8 @@ urlpatterns = [
             path('statistic',views.StatisticAPIListView.as_view()),
 
             #paiement
-            path('paiement/', CreationPaiementAPIView),
-            path('paiement/<int:pk>/', ModifierPaiementAPIView),
+            path('paiement/', CreationPaiementAPIView.as_view()),
+            path('paiement/<int:pk>/', ModifierPaiementAPIView.as_view()),
 
 
             #employees
