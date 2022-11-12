@@ -2,6 +2,7 @@ from api_fewnu_compta.serializers import *
 from rest_framework import generics, status
 from rest_framework.response import Response
 from api_fewnu_compta.models import Paiement
+from api_fewnu_compta.models import Employee
 # from rest_framework.generics import UpdateAPIView
 from rest_framework.decorators import api_view
 
@@ -54,6 +55,6 @@ class getListPaimentByUser(generics.ListCreateAPIView):
 
     def get(self, request, pk, format=None):
         paiement = Paiement.objects.filter(id_employe=pk).all()
-        serializer = PaiementSerializer(paiement)
+        serializer = PaiementSerializer(paiement, many=True)
         return Response(serializer.data, status=200)
  
