@@ -3,6 +3,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from api_fewnu_compta.models import Paiement
 
+
+#Creation paiement
 class Creation_paiementAPIView(generics.CreateAPIView):
     
     queryset = Paiement.objects.all()
@@ -20,3 +22,8 @@ class Creation_paiementAPIView(generics.CreateAPIView):
             return Response(paiement.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+#MModifier paiement
+class Modifier_paiementAPIView(UpdateAPIView)
+
