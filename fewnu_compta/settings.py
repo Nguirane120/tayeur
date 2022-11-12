@@ -98,9 +98,9 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fewnu',
-        'USER': 'sultan',
-        'PASSWORD': 'jepasse',
+        'NAME': 'tayeur',
+        'USER': 'alioune',
+        'PASSWORD': 'passer123',
         # 'HOST': 'db',
         'HOST': 'localhost', #for local
         'PORT': '5432',

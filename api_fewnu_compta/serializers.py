@@ -114,3 +114,8 @@ class DepenseSerializer(serializers.ModelSerializer):
         fields =('id','image','matricule','status','user','user_info','fournisseur','fournisseur_info','list_products','date')
         # depth = 1
         
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = '__all__'

@@ -6,7 +6,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view as swagger_get_schema_view
 from . import views
 from django.conf.urls.static import static 
-
+from .views.employee import *
 schema_view = swagger_get_schema_view(
     openapi.Info(
         title="Fewnu Compta",
@@ -86,6 +86,11 @@ urlpatterns = [
             path('achat/<int:id>/', views.DepenseArticleByIdAPIView.as_view()),
 
             path('statistic',views.StatisticAPIListView.as_view()),
+
+            #employees
+            path('employees/', EmployeeList.as_view()),
+            path('emplyees/', CreateEmployee.as_view()),
+            path('employees/<int:pk>', DetailEmployee.as_view()),
         ])
     ),
 ]
