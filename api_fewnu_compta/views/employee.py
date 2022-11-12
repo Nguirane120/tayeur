@@ -26,12 +26,13 @@ class CreateEmployee(generics.CreateAPIView):
             return Response(serializer.data, status=200)
         return Response(serializer.errors, status=400)
 
-class DetailEmployee(APIView):
+class DetailEmployee(generics.UpdateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
     def get(self,pk, request, format=None):
-        employee = self.get_object(pk)
+        employee = Employee.objects.filter(archived=False).order_by('pk')
+
         serializer = EmployeeSerializer(employee)
 
         return Response(serializer.data, status=200)
@@ -47,10 +48,16 @@ class DetailEmployee(APIView):
 
         return Response(serializer.errors, status=400)
 
-    def delete(self, pk, request, format=None):
-        employee = self.get_object(pk)
-        employee.delete()
-
-        return Response(status=200)
+    def delete(self, request, *args, **kwargs):
+        try:
+            employee = Employee.objects.filter(archived=False).get(id=kwargs["id"])
+        except Employee.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+        employee.archived=True
+        employee.save()
+        return Response({"message": "deleted"},status=204)
 
 

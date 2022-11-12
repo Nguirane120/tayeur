@@ -14,6 +14,7 @@ class Employee(models.Model):
     poste = models.CharField(max_length=125)
     date_debut = models.DateTimeField(auto_now_add=True)
     date_fin = models.DateTimeField(auto_now_add=True)
+    archived = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.nom_complet
