@@ -9,7 +9,7 @@ from ..serializers import EmployeeSerializer
 class EmployeeList(APIView):
 
     def get(self, request, format=None):
-        employees = Employee.objects.all()
+        employees = Employee.objects.filter(archived=False).all()
         serializer = EmployeeSerializer(employees, many=True)
 
         return Response(serializer.data, status=200)
@@ -41,8 +41,8 @@ class DetailEmployee(generics.UpdateAPIView):
                 "message": "no such item with this id",
                 }, status=404)
 
-    def put(self, pk, request, format=None):
-        employee = self.get_object(pk)
+    def put(self, request, pk,format=None):
+        employee = Employee.objects.get(pk=pk)
         serializer = EmployeeSerializer(employee, data=request.data)
 
         if serializer.is_valid():
@@ -54,7 +54,7 @@ class DetailEmployee(generics.UpdateAPIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            employee = Employee.objects.filter(archived=False).get(id=kwargs["id"])
+            employee = Employee.objects.filter(archived=False).get(id=kwargs["pk"])
         except Employee.DoesNotExist:
             return Response({
                 "status": "failure",
