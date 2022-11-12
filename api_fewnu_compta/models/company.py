@@ -4,7 +4,8 @@ from .user import User
 
 class Company(models.Model):
     date = models.DateTimeField(default=timezone.now)
-    raisonSocial = models.CharField(max_length=250,blank=True, null=True)
+    raisonSocial = models.CharField(max_length=250,blank=True, null=True) # nom de l'entreprise
+    telephone = models.CharField(max_length=30 , blank=True, null=True)
     logo = models.ImageField(upload_to='images/',null=True, blank=True)
     formJuridiqu = models.CharField(max_length=250,blank=True, null=True)
     pays = models.CharField(max_length=30,blank=True, null=True)

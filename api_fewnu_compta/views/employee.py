@@ -30,12 +30,16 @@ class DetailEmployee(generics.UpdateAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-    def get(self,pk, request, format=None):
-        employee = Employee.objects.filter(archived=False).order_by('pk')
-
-        serializer = EmployeeSerializer(employee)
-
-        return Response(serializer.data, status=200)
+    def get(self, request, pk, format=None):
+        try:
+            item = Employee.objects.filter(archived=False).get(pk=pk)
+            serializer = EmployeeSerializer(item)
+            return Response(serializer.data)
+        except Employee.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
 
     def put(self, pk, request, format=None):
         employee = self.get_object(pk)
