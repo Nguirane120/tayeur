@@ -86,6 +86,9 @@ urlpatterns = [
             path('achat/<int:id>/', views.DepenseArticleByIdAPIView.as_view()),
 
             path('statistic',views.StatisticAPIListView.as_view()),
+
+            #paiement
+            path("creation_paiement/", views.Creation_paiementAPIView.as_view()),
         ])
     ),
 ]

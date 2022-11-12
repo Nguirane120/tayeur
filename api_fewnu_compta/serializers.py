@@ -1,6 +1,7 @@
 from api_fewnu_compta import models
 from api_fewnu_compta.models import User
 from api_fewnu_compta.models import Customer
+from api_fewnu_compta.models import Paiement
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import *
@@ -113,4 +114,9 @@ class DepenseSerializer(serializers.ModelSerializer):
         model = Depense
         fields =('id','image','matricule','status','user','user_info','fournisseur','fournisseur_info','list_products','date')
         # depth = 1
-        
+
+# paiement
+class PaiementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paiement
+        fields = '__all__'
