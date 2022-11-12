@@ -5,15 +5,15 @@ from api_fewnu_compta.models import Paiement
 # from rest_framework.generics import UpdateAPIView
 from rest_framework.decorators import api_view
 
-
+#Création d'un paiement
 @api_view(['POST'])
 def CreationPaiementAPIView(request):
-#     print(type(request.data["created_by"]))
     paiement = PaiementSerializer(data=request.data)
     
-    # validating for already existing data
     if Paiement.objects.filter(**request.data).exists():
         raise serializers.ValidationError('cette donnée existe déjà')
+    # if Paiement.objects.filter(**request.data).none:
+    #     raise serializers.ValidationError('les donnée sont imcomplétes')
 
     if paiement.is_valid():
         paiement.save()
@@ -36,5 +36,7 @@ def ModifierPaiementAPIView(request, pk):
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+#Liste de paie par employé
 
 
