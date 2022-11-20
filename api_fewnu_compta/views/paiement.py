@@ -8,7 +8,6 @@ from rest_framework.decorators import api_view
 
 
 
-
 class CreationPaiementAPIView(generics.ListCreateAPIView):
     queryset = Paiement.objects.all()
     serializer_class = PaiementSerializer
