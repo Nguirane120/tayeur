@@ -27,7 +27,7 @@ class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
-        email = request.data["email"]
+        # email = request.data["email"]
         phone = request.data["phone"]
         password = request.data["password"]
         
@@ -36,13 +36,13 @@ class LoginView(generics.CreateAPIView):
         else:
             try:
                 if phone :
-                    userData = User.objects.get(phone=phone)
-                    print("user data in phone", userData)
-                    user = authenticate(request, email=userData, password=password)
-                elif email :
-                    user = authenticate(request, email=email, password=password)
-                    print("user data in email")
-                print("user",user)
+                    # userData = User.objects.get(phone=phone)
+                    # print("user data in phone", userData)
+                    user = authenticate(request, phone=phone, password=password)
+                # elif email :
+                #     user = authenticate(request, email=email, password=password)
+                #     print("user data in email")
+                # print("user",user)
                 if user is not None:
                     login(request, user)
                     # Redirect to a success page.
@@ -61,9 +61,9 @@ class LoginView(generics.CreateAPIView):
                         }
                         return Response(response_data)   
                 else:
-                    return Response(data={"message": "Votre email ou mot de passe est incorrect"},status=401)
+                    return Response(data={"message": "Votre numero de telephone ou mot de passe est incorrect"},status=401)
             except User.DoesNotExist:
-                return Response(data={"message": "Votre email n'existe pas"},status=401)
+                return Response(data={"message": "Ce numero de telephone n'existe pas"},status=401)
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     def get(self, request, format=None):

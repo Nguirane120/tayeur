@@ -93,18 +93,17 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 # for herokuapp
 # DATABASES = { 'default': dj_database_url.config() }
 
-
 # for local 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tayeur',
+        'NAME': 'tayeurgestion',
         'USER': 'alioune',
         'PASSWORD': 'passer',
-        # 'HOST': 'db',
         'HOST': 'localhost', #for local
         'PORT': '5432',
     }
+    
 }
 
 # for docker 

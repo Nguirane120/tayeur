@@ -40,7 +40,7 @@ class MyUserManager(BaseUserManager):
         Creates and saves a superuser with the given email, and password.
         """
         user = self.create_user(
-            email,
+           email=self.normalize_email(email),
             phone=phone,
             password=password,
             firstName=firstName,
@@ -64,7 +64,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     # nom_complet = models.CharField(max_length=100, blank=True)
     firstName = models.CharField(max_length=100, blank=True)
     lastName = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(("Email"), max_length=254,unique=True)
+    email = models.EmailField(("Email"), max_length=254,unique=True, blank=True, null=True)
     adresse = models.CharField(blank=True, max_length=255, null=True)
     # nom_gerant=models.CharField(max_length=100, blank=True, default="", null=False)
     # nom_boutique=models.CharField(max_length=300, blank=True, null=True)
@@ -78,8 +78,8 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['phone','firstName','lastName','adresse']
+    USERNAME_FIELD = "phone"
+    REQUIRED_FIELDS = ['firstName','lastName','adresse', 'email']
 
     # class Meta:
     #     """

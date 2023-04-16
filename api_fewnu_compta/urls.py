@@ -36,11 +36,11 @@ urlpatterns = [
             path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name="swagger-schema"),
 
             # clients 
-            path('clients',views.CustomerAPIListView.as_view()),
-            path('client',views.CustomerAPIView.as_view()),
-            path('client/upload',views.CustomerUploadFileView.as_view()),
-            path('client/export',views.CustomerExportFileView),
-            path('client/<int:id>/',views.CustomerByIdAPIView.as_view()),
+       
+            path('clients',views.CustomerAPIView.as_view()),
+            path('clients/upload',views.CustomerUploadFileView.as_view()),
+            path('clients/export',views.CustomerExportFileView),
+            path('clients/<int:id>/',views.CustomerByIdAPIView.as_view()),
 
             # company 
             path('company/', views.CompanyAPIView.as_view()),

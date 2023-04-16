@@ -3,26 +3,6 @@ from django.utils import timezone
 from .user import User
 
 
-#Mesure
-class Mesure(models.Model):
-
-    COU = models.IntegerField(null=True, blank=True)
-    EPAULE = models.IntegerField(null=True, blank=True)
-    MANCHES = models.IntegerField(null=True, blank=True)
-    CEINTURE = models.IntegerField(null=True, blank=True)
-    TOURS_DE_BRAS = models.IntegerField(null=True, blank=True)
-    TOURS_DE_HANCHES = models.IntegerField(null=True, blank=True)
-    TOURS_DE_CUISSE = models.IntegerField(null=True, blank=True)
-    LONGUEUR_HAUT = models.IntegerField(null=True, blank=True)
-    LONGUEUR_BAS = models.IntegerField(null=True, blank=True)
-    LONGUEUR_BOUBOU = models.IntegerField(null=True, blank=True)
-    LONGUEUR_JUPE = models.IntegerField(null=True, blank=True)
-    POITRINE = models.IntegerField(null=True, blank=True)
-    TOURS_DE_TAILLE = models.IntegerField(null=True, blank=True)
-    LONGUEUR_BRAS = models.IntegerField(null=True, blank=True)
-    LONGUEUR_ROBE = models.IntegerField(null=True, blank=True)
-
-
 
 class Customer(models.Model):
     FEMME = "femme"
@@ -31,19 +11,36 @@ class Customer(models.Model):
         (FEMME, 'femme'),
         (HOMME, 'homme')
     )
-    date = models.DateTimeField(default=timezone.now)
-    firstName = models.CharField(max_length=250)
-    lastName = models.CharField(max_length=250)
+    # date = models.DateTimeField(default=timezone.now)
+    nom_complet = models.CharField(max_length=250)
     telephone = models.CharField(max_length=30)
     adresse = models.CharField(max_length=250)
-    email = models.EmailField(("Email"), max_length=254)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='customer')
-    # shop = models.ForeignKey('Shop',on_delete = models.CASCADE, related_name='customer',null=True)
+    pays = models.CharField(max_length=255, null=True, blank=True)
+    Ville = models.CharField(max_length=255,null=True, blank=False)
+    sexe = models.CharField(max_length=10,choices=SEXE,default=FEMME,)
+    cou=models.IntegerField(null=True, blank=True)
+    epaule=models.IntegerField(null=True, blank=True)
+    longueur_boubou=models.IntegerField(null=True, blank=True)
+    longueur_manche=models.IntegerField(null=True, blank=True)
+    cuisse=models.IntegerField(null=True, blank=True)
+    longueur_pantalon=models.IntegerField(null=True, blank=True)
+    hanche=models.IntegerField(null=True, blank=True)
+    ceinture=models.IntegerField(null=True, blank=True)
+    tour_bras=models.IntegerField(null=True, blank=True)
+    poitrine=models.IntegerField(null=True, blank=True)
+    taille=models.IntegerField(null=True, blank=True)
+    longueur_robe=models.IntegerField(null=True, blank=True)
+    longueur_poitrine=models.IntegerField(null=True, blank=True)
+    bretelle=models.IntegerField(null=True, blank=True)
+    longueur_jupe=models.IntegerField(null=True, blank=True)
+    longueur_haut=models.IntegerField(null=True, blank=True)
+    blouse=models.IntegerField(null=True, blank=True)
+    autre=models.IntegerField(null=True, blank=True)
+    # created_by = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
     archived = models.BooleanField(default=False)
 
-    sexe = models.CharField(max_length=10,choices=SEXE,default=FEMME,)
-    mesure = models.ForeignKey(
-        Mesure , on_delete=models.CASCADE, blank=False, null=True)
 
 
     class Meta:
@@ -55,4 +52,4 @@ class Customer(models.Model):
         app_label = "api_fewnu_compta"
 
     def __str__(self):
-        return self.email
+        return self.nom_complet

@@ -29,7 +29,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'password')
+        fields = ('phone', 'password')
 
 class TokenSerializer(serializers.Serializer):
     """
@@ -44,10 +44,11 @@ class FileUploadSerializer(serializers.Serializer):
 
 # client 
 class CustomerSerializer(serializers.ModelSerializer):
-    # user_id = UserSerializer(read_only=True)
+    createdBy = UserSerializer(read_only=True)
     class Meta:
         model = Customer
-        fields =('id','firstName','lastName','telephone','adresse','email','user_id')
+        # fields =('id','firstName','lastName','telephone','adresse','email','createdBy')
+        fields = '__all__'
 
 # fournisseur 
 class FournisseurSerializer(serializers.ModelSerializer):

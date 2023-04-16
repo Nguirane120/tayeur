@@ -53,7 +53,7 @@ def CustomerExportFileView(request):
 
     return response
 
-class CustomerAPIView(generics.CreateAPIView):
+class CustomerAPIView(generics.ListCreateAPIView):
     """
     POST api/v1/client/
     """
@@ -67,26 +67,14 @@ class CustomerAPIView(generics.CreateAPIView):
             return Response(serializer.data,status=201)
         return Response(serializer.errors, status=400)
 
-class CustomerAPIListView(generics.CreateAPIView):
-    """
-    GET api/v1/clients/
-    """
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
-
-    def post(self, request, format=None):
-        serializer = CustomerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=201)
-        return Response(serializer.errors, status=400)
-
     def get(self, request, format=None):
-        items = Customer.objects.filter(archived=False).order_by('pk')
+        items = Customer.objects.filter(archived=False).all()
         serializer = CustomerSerializer(items, many=True)
         return Response({"count": items.count(),"data":serializer.data})
 
-class CustomerByIdAPIView(generics.CreateAPIView):
+
+
+class CustomerByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (
     #     permissions.IsAuthenticated,
     # )
