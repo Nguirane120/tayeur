@@ -119,3 +119,21 @@ class CustomerByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
         item.archived=True
         item.save()
         return Response({"message": "deleted"},status=204)
+
+
+class CustomerByUser(generics.RetrieveAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    # permission_classes = []
+
+    def get(self, request, id, format=None):
+        try:
+            item = Customer.objects.filter(archived=False).filter(createdBy=id)
+            print("List des client by user ", item)
+            serializer = CustomerSerializer(item,many=True)
+            return Response(serializer.data)
+        except Customer.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)

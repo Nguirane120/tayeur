@@ -41,6 +41,7 @@ urlpatterns = [
             path('clients/upload',views.CustomerUploadFileView.as_view()),
             path('clients/export',views.CustomerExportFileView),
             path('clients/<int:id>/',views.CustomerByIdAPIView.as_view()),
+            path('clients/user/<int:id>/',views.CustomerByUser.as_view()),
 
             # company 
             path('company/', views.CompanyAPIView.as_view()),

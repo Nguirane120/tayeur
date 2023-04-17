@@ -44,11 +44,10 @@ class FileUploadSerializer(serializers.Serializer):
 
 # client 
 class CustomerSerializer(serializers.ModelSerializer):
-    createdBy = UserSerializer(read_only=True)
+    user = UserSerializer(read_only=True, source="createdBy")
     class Meta:
         model = Customer
-        # fields =('id','firstName','lastName','telephone','adresse','email','createdBy')
-        fields = '__all__'
+        fields = ('id', 'nom_complet', 'telephone', 'adresse', 'pays', 'Ville', 'sexe', 'cou', 'epaule', 'longueur_boubou', 'longueur_manche', 'cuisse', 'longueur_pantalon', 'hanche', 'ceinture', 'tour_bras', 'poitrine', 'taille', 'longueur_robe', 'longueur_poitrine', 'bretelle', 'longueur_jupe', 'longueur_haut', 'blouse', 'autre', 'createdBy', 'user','created_at', 'archived')        
 
 # fournisseur 
 class FournisseurSerializer(serializers.ModelSerializer):
