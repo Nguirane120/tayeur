@@ -14,4 +14,5 @@ from .mail import *
 from .statistic import *
 from .album import *
 from .photos import *
+from .commande import *
 # from .cookies import *

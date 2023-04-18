@@ -1,6 +1,7 @@
 from api_fewnu_compta import models
 from api_fewnu_compta.models import User
 from api_fewnu_compta.models import Customer
+from api_fewnu_compta.models import Commande
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import *
@@ -135,3 +136,10 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
         fields = '__all__'
+
+
+class CommandeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='createdBy')
+    class Meta:
+        model = Commande
+        fields = ('nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'statut', 'date_commande','clientId', 'createdBy','user' )

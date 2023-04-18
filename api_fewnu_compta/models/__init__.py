@@ -12,3 +12,4 @@ from .employee import Employee
 from .paiement import Paiement 
 from .album import Album 
 from .photos import Photo 
+from .commande import *

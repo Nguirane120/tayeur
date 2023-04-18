@@ -43,6 +43,11 @@ urlpatterns = [
             path('clients/<int:id>/',views.CustomerByIdAPIView.as_view()),
             path('clients/user/<int:id>/',views.CustomerByUser.as_view()),
 
+            # commandes
+            path('commandes/',views.CommandeAPIView.as_view()),
+            path('commandes/<int:id>/',views.CommandeByIdAPIView.as_view()),
+            path('commandes/user/<int:id>/',views.CommandeByUser.as_view()),
+
             # company 
             path('company/', views.CompanyAPIView.as_view()),
             path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),
