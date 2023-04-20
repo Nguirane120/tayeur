@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import dj_database_url
 import os
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -97,11 +102,11 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tayeurgestion',
-        'USER': 'alioune',
-        'PASSWORD': 'passer',
-        'HOST': 'localhost', #for local
-        'PORT': '5432',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT'],
     }
     
 }
