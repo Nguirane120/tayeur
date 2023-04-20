@@ -49,7 +49,6 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ('id', 'nom_complet', 'telephone', 'adresse', 'pays', 'Ville', 'sexe', 'cou', 'epaule', 'longueur_boubou', 'longueur_manche', 'cuisse', 'longueur_pantalon', 'hanche', 'ceinture', 'tour_bras', 'poitrine', 'taille', 'longueur_robe', 'longueur_poitrine', 'bretelle', 'longueur_jupe', 'longueur_haut', 'blouse', 'autre', 'createdBy', 'user','created_at', 'archived')        
-
 # fournisseur 
 class FournisseurSerializer(serializers.ModelSerializer):
     # user_id = UserSerializer(read_only=True)
@@ -140,6 +139,11 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 class CommandeSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='createdBy')
+    client = CustomerSerializer(read_only=True, source='clientId')
     class Meta:
         model = Commande
-        fields = ('nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'statut', 'date_commande','clientId', 'createdBy','user' )
+        fields = ('id','nom_tissu', 'metre_tissu', 
+        'modele', 'date_livraison', 
+        'montant', 'statut', 
+        'date_commande','clientId', 
+        'client', 'createdBy','user' )
