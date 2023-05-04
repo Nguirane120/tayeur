@@ -73,6 +73,6 @@ class getListPhotosByAlbumId(generics.ListCreateAPIView):
     serializer_class = PhotoSerializer
 
     def get(self, request, id, format=None):
-        photo = Photo.objects.filter(album=id).all()
+        photo = Photo.objects.filter(albumId=id).all()
         serializer = PhotoSerializer(photo, many=True)
         return Response(serializer.data, status=200)

@@ -127,14 +127,19 @@ class EmployeeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AlbumSerializer(serializers.ModelSerializer):
+    user = UserSerializer(source="createdBy",read_only=True)
+
     class Meta:
         model = Album
-        fields = '__all__'
+        fields = ['id', 'name', 'images', 'archived', 'createdBy', 'user']
 
 class PhotoSerializer(serializers.ModelSerializer):
+    user = UserSerializer(source="createdBy",read_only=True)
+    album = AlbumSerializer(source="albumId",read_only=True)
+
     class Meta:
         model = Photo
-        fields = '__all__'
+        fields = ['id','albumId','album', 'images', 'createdBy','user' ]
 
 
 class CommandeSerializer(serializers.ModelSerializer):
