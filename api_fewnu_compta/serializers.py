@@ -149,6 +149,6 @@ class CommandeSerializer(serializers.ModelSerializer):
         model = Commande
         fields = ('id','nom_tissu', 'metre_tissu', 
         'modele', 'date_livraison', 
-        'montant', 'statut', 
+        'montant', 'montant_restant', 'montant_paye', 'statut', 
         'date_commande','clientId', 
         'client', 'createdBy','user' )

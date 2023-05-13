@@ -84,11 +84,15 @@ class CommandeByUser(generics.RetrieveAPIView):
     def get(self, request, id, format=None):
         try:
             item = Commande.objects.filter(archived=False).filter(createdBy=id)
-            print("List des client by user ", item)
             serializer = CommandeSerializer(item,many=True)
+            for obj in serializer.data:
+                print(obj['montant_paye'])
+
+                obj['montant_restant'] = obj['montant'] - obj['montant_paye']
             return Response(serializer.data)
         except Commande.DoesNotExist:
             return Response({
                 "status": "failure",
                 "message": "no such item with this id",
                 }, status=404)
+
