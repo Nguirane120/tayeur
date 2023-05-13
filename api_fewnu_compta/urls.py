@@ -91,6 +91,7 @@ urlpatterns = [
             # album 
             path('album/', views.AlbumAPIView.as_view()),
             path('album/<int:id>/', views.AlbumByIdAPIView.as_view()),
+             path('album/user/<int:id>/',views.AlbumByUser.as_view()),
 
              # photos
             path('photo/', views.PhotoAPIView.as_view()),

@@ -18,7 +18,11 @@ class CommandeAPIView(generics.ListCreateAPIView):
     def post(self, request, format=None):
         serializer = CommandeSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            commande = serializer.save()
+            commande.montant_restant = commande.montant
+            if commande.montant_paye:
+                commande.montant_restant -= commande.montant_paye
+            commande.save()
             return Response(serializer.data,status=201)
         return Response(serializer.errors, status=400)
 

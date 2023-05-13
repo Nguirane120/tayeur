@@ -67,3 +67,22 @@ class AlbumByIdAPIView(generics.CreateAPIView):
         item.archived=True
         item.save()
         return Response({"message": "deleted"},status=204)
+    
+
+class AlbumByUser(generics.RetrieveAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    # permission_classes = []
+
+    def get(self, request, id, format=None):
+        try:
+            item = Album.objects.filter(archived=False).filter(createdBy=id)
+            serializer = AlbumSerializer(item,many=True)
+            return Response(serializer.data)
+        except Album.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+
+
