@@ -30,6 +30,8 @@ class CommandeAPIView(generics.ListCreateAPIView):
     def get(self, request, format=None):
         items = Commande.objects.filter(archived=False).all()
         serializer = CommandeSerializer(items, many=True)
+        total_amount = Commande.total_amount()
+        # print(total_amount)
         return Response(serializer.data)
 
 
@@ -91,10 +93,9 @@ class CommandeByUser(generics.RetrieveAPIView):
             item = Commande.objects.filter(archived=False).filter(createdBy=id)
             serializer = CommandeSerializer(item,many=True)
             for obj in serializer.data:
-                print(obj['montant_paye'])
-
                 obj['montant_restant'] = obj['montant'] - obj['montant_paye']
-            return Response(serializer.data)
+            total_amount = Commande.total_amount()
+            return Response({ "prixTotal": total_amount, 'data': serializer.data})
         except Commande.DoesNotExist:
             return Response({
                 "status": "failure",

@@ -1,7 +1,5 @@
 from django.db import models
-import uuid
-import random
-import string
+from django.db.models import Sum
 from django.db.models import Max
 from django.utils import timezone
 from .user import User
@@ -18,7 +16,7 @@ TERMINEE = 'terminee'
 STATUS_TYPES = (
     (NOUVELLE, 'Nouvelle'),
     (LIVREE, 'Livree'),
-    (ENCOURS, 'ENCOURS'),
+    (ENCOURS, 'Encours'),
     (TERMINEE, 'Terminee'),
 )
 
@@ -54,3 +52,7 @@ class Commande(models.Model):
             new_numero = '0001'
         return new_numero
 
+
+    @classmethod
+    def total_amount(cls):
+        return cls.objects.aggregate(Sum('montant'))['montant__sum']
