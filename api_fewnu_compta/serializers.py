@@ -19,7 +19,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             phone=validated_data['phone'],
             firstName=validated_data['firstName'],
             lastName=validated_data['lastName'],
-            email=validated_data['email'],
+            # email=validated_data['email'],
             adresse = validated_data['adresse']
         )
         user.user_type='owner'
