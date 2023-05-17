@@ -1,4 +1,8 @@
 from django.db import models
+import uuid
+import random
+import string
+from django.db.models import Max
 from django.utils import timezone
 from .user import User
 from .client import Customer
@@ -7,13 +11,15 @@ from .client import Customer
 
 
 
-LIVREE = 'livree' 
-ENCOURS = 'encours'
 NOUVELLE = 'nouvelle'
+LIVREE = 'livree'
+ENCOURS = 'encours'
+TERMINEE = 'terminee'
 STATUS_TYPES = (
-    (NOUVELLE,NOUVELLE),
-    (LIVREE,LIVREE),
-    (ENCOURS,ENCOURS)
+    (NOUVELLE, 'Nouvelle'),
+    (LIVREE, 'Livree'),
+    (ENCOURS, 'ENCOURS'),
+    (TERMINEE, 'Terminee'),
 )
 
 class Commande(models.Model):
@@ -29,9 +35,22 @@ class Commande(models.Model):
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     archived = models.BooleanField(default=False)
     date_commande = models.DateTimeField(default=timezone.now)
-
-    # reduction = models.DecimalField(decimal_places=2, max_digits=20)
-
+    numero_commande = models.CharField(max_length=4, unique=True)
 
     def __str__(self):
-        return self.nom_tissu
+        return str(self.nom_tissu)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.numero_commande = Commande.generate_unique_numero_commande()
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def generate_unique_numero_commande():
+        last_numero = Commande.objects.all().aggregate(Max('numero_commande'))['numero_commande__max']
+        if last_numero:
+            new_numero = str(int(last_numero) + 1).zfill(4)
+        else:
+            new_numero = '0001'
+        return new_numero
+
