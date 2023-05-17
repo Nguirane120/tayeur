@@ -10,7 +10,7 @@ from .models import *
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model= User
-        fields = ('phone','lastName','firstName','password','email', 'user_type','adresse')
+        fields = ('phone','lastName','firstName','password', 'user_type','adresse')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -19,7 +19,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             phone=validated_data['phone'],
             firstName=validated_data['firstName'],
             lastName=validated_data['lastName'],
-            email=validated_data['email'],
+            # email=validated_data['email'],
             adresse = validated_data['adresse']
         )
         user.user_type='owner'

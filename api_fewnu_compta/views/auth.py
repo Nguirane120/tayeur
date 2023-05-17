@@ -56,7 +56,7 @@ class LoginView(generics.CreateAPIView):
                             'firstName': user.firstName,
                             'lastName': user.lastName,
                             'phone': user.phone,
-                            'email':user.email,
+                            # 'email':user.email,
                             'user_type':user.user_type,
                         }
                         return Response(response_data)   

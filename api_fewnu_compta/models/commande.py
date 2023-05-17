@@ -8,12 +8,14 @@ from .client import Customer
 
 
 LIVREE = 'livree' 
+TERMINEE = 'terminee' 
 ENCOURS = 'encours'
 NOUVELLE = 'nouvelle'
 STATUS_TYPES = (
     (NOUVELLE,NOUVELLE),
     (LIVREE,LIVREE),
-    (ENCOURS,ENCOURS)
+    (ENCOURS,ENCOURS),
+    (TERMINEE,TERMINEE)
 )
 
 class Commande(models.Model):
