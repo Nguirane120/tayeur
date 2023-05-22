@@ -18,6 +18,7 @@ class CommandeAPIView(generics.ListCreateAPIView):
     def post(self, request, format=None):
         serializer = CommandeSerializer(data=request.data)
         if serializer.is_valid():
+            # print(serializer.data)
             commande = serializer.save()
             commande.montant_restant = commande.montant
             if commande.montant_paye:
@@ -29,6 +30,8 @@ class CommandeAPIView(generics.ListCreateAPIView):
     def get(self, request, format=None):
         items = Commande.objects.filter(archived=False).all()
         serializer = CommandeSerializer(items, many=True)
+        total_amount = Commande.total_amount()
+        # print(total_amount)
         return Response(serializer.data)
 
 
@@ -83,20 +86,30 @@ class CommandeByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
 class CommandeByUser(generics.RetrieveAPIView):
     queryset = Commande.objects.all()
     serializer_class = CommandeSerializer
-    # permission_classes = []
 
     def get(self, request, id, format=None):
         try:
             item = Commande.objects.filter(archived=False).filter(createdBy=id)
-            serializer = CommandeSerializer(item,many=True)
+            serializer = CommandeSerializer(item, many=True)
+            prix_total = 0  # Calcul du prix total initial
             for obj in serializer.data:
-                print(obj['montant_paye'])
-
                 obj['montant_restant'] = obj['montant'] - obj['montant_paye']
-            return Response(serializer.data)
+                obj['total_amount'] = Commande.total_amount()
+                prix_total += obj['montant']  # Ajout du montant de chaque objet pour calculer le prix total
+                obj['prixTotal'] = prix_total  # Ajout de la clé "prixTotal" à chaque objet
+                
+            response_data = {'prixTotal': prix_total, 'data': serializer.data}
+            return Response(response_data)
         except Commande.DoesNotExist:
             return Response({
                 "status": "failure",
                 "message": "no such item with this id",
-                }, status=404)
+            }, status=404)
+
+
+
+
+
+
+
 

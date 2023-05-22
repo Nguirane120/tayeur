@@ -143,12 +143,18 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 
 class CommandeSerializer(serializers.ModelSerializer):
+    numero_commande = serializers.CharField(read_only=True)
     user = UserSerializer(read_only=True, source='createdBy')
     client = CustomerSerializer(read_only=True, source='clientId')
+
     class Meta:
         model = Commande
-        fields = ('id','nom_tissu', 'metre_tissu', 
+        fields = ('id','numero_commande','nom_tissu', 'metre_tissu', 
         'modele', 'date_livraison', 
         'montant', 'montant_restant', 'montant_paye', 'statut', 
         'date_commande','clientId', 
         'client', 'createdBy','user' )
+
+    def create(self, validated_data):
+        validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
+        return super().create(validated_data)

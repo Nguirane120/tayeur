@@ -16,13 +16,15 @@ USER_TYPES = (
 )
 
 class MyUserManager(BaseUserManager):
-    def create_user(self,lastName,firstName,phone,adresse, password=None):
+    def create_user(self, email,lastName,firstName,phone,adresse, password=None):
         """
         Creates and saves a User with the given email, \and password.
         """
+        if not email:
+            raise ValueError('Users must have an email address')
 
         user = self.model(
-            # email=self.normalize_email(email),
+            email=self.normalize_email(email),
             lastName= lastName,
             firstName = firstName,
             phone= phone,
@@ -62,7 +64,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     # nom_complet = models.CharField(max_length=100, blank=True)
     firstName = models.CharField(max_length=100, blank=True)
     lastName = models.CharField(max_length=100, blank=True)
-    # email = models.EmailField(("Email"), max_length=254, blank=True, null=True)
+    email = models.EmailField(("Email"), max_length=254,unique=True, blank=True, null=True)
     adresse = models.CharField(blank=True, max_length=255, null=True)
     # nom_gerant=models.CharField(max_length=100, blank=True, default="", null=False)
     # nom_boutique=models.CharField(max_length=300, blank=True, null=True)
@@ -77,7 +79,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     objects = MyUserManager()
 
     USERNAME_FIELD = "phone"
-    REQUIRED_FIELDS = ['firstName','lastName','adresse']
+    REQUIRED_FIELDS = ['firstName','lastName','adresse', 'email']
 
     # class Meta:
     #     """
@@ -88,4 +90,4 @@ class User(AbstractBaseUser,PermissionsMixin):
     #     app_label = "api_fewnu_compta"
 
     def __str__(self):
-        return self.lastName
+        return self.email
