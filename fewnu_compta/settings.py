@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tayeurv2',
+        'NAME': 'tayeurV2',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
