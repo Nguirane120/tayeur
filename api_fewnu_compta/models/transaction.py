@@ -8,4 +8,3 @@ class Transaction(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.commande.update_montant_restant()

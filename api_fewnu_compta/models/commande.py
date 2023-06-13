@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 from django.db.models import Max
 from django.utils import timezone
 from .user import User
@@ -33,21 +32,31 @@ class Commande(models.Model):
     numero_commande = models.CharField(max_length=4, unique=True)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='commandes', null=True, blank=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._montant_restant = None  # Valeur par défaut pour montant_restant lors de la création
+
     def update_montant_restant(self):
         transactions = self.transactions.filter(archived=False)
         montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
         if montant_paye_total is None:
             montant_paye_total = 0
-        self.montant_restant = self.montant - montant_paye_total
-        self.save(update_fields=['montant_restant'])
-        
+        self._montant_restant = self.montant - montant_paye_total
+        print(self._montant_restant)
+
+    def update_avance(self):
+        transactions = self.transactions.filter(archived=False)
+        self.avance = transactions.aggregate(total=models.Sum('montant_paye'))['total'] or 0
+
     def __str__(self):
-        return str(self.nom_tissu)
+        return f'{str(self.nom_tissu)}'
 
     def save(self, *args, **kwargs):
         if not self.pk:
             self.numero_commande = Commande.generate_unique_numero_commande()
         super().save(*args, **kwargs)
+        self.update_montant_restant()
+        self.update_avance()
 
     @staticmethod
     def generate_unique_numero_commande():
@@ -62,10 +71,6 @@ class Commande(models.Model):
     def total_amount(cls):
         return cls.objects.aggregate(models.Sum('montant'))['montant__sum']
 
-
-   
-
-    @property
     def montant_paye(self):
         transactions = self.transactions.filter(archived=False)
         montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
@@ -73,8 +78,14 @@ class Commande(models.Model):
             montant_paye_total = 0
         return montant_paye_total
 
-    @property
     def montant_restant(self):
-        if self.montant is None:
+        if self._montant_restant is None:
             return None
-        return self.montant - self.montant_paye
+        return self._montant_restant
+
+    def avance(self):
+        transactions = self.transactions.filter(archived=False)
+        avance = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        if avance is None:
+            avance = 0
+        return avance

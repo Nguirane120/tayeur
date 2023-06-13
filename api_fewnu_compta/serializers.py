@@ -152,7 +152,7 @@ class CommandeSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='createdBy')
     transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
     client = CustomerSerializer(read_only=True, source='clientId')
-    montant_restant = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    montant_restant = serializers.SerializerMethodField()
     montant_paye = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
@@ -162,4 +162,11 @@ class CommandeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
         return super().create(validated_data)
+    
+    def get_montant_restant(self, instance):
+        transactions = instance.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        return instance.montant - montant_paye_total
 
