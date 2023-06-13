@@ -48,6 +48,10 @@ urlpatterns = [
             path('commandes/<int:id>/',views.CommandeByIdAPIView.as_view()),
             path('commandes/user/<int:id>/',views.CommandeByUser.as_view()),
 
+             # transaction
+            path('transaction/',views.TransactionAPIView.as_view()),
+            path('transaction/<int:id>/',views.TransactionByIdAPIView.as_view()),
+
             # company 
             path('company/', views.CompanyAPIView.as_view()),
             path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),

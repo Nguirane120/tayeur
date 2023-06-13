@@ -15,4 +15,5 @@ from .statistic import *
 from .album import *
 from .photos import *
 from .commande import *
+from .transaction import *
 # from .cookies import *

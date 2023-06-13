@@ -4,9 +4,7 @@ from django.db.models import Max
 from django.utils import timezone
 from .user import User
 from .client import Customer
-
-
-
+from .transaction import Transaction
 
 
 NOUVELLE = 'nouvelle'
@@ -20,21 +18,29 @@ STATUS_TYPES = (
     (TERMINEE, 'Terminee'),
 )
 
+
 class Commande(models.Model):
-    nom_tissu = models.CharField(max_length=255,null=True, blank=True)
+    nom_tissu = models.CharField(max_length=255, null=True, blank=True)
     metre_tissu = models.IntegerField(null=True, blank=True)
     modele = models.FileField(upload_to='images/', blank=True, null=True)
-    date_livraison = models.DateTimeField(default=timezone.now, blank=True, null = True)
+    date_livraison = models.DateTimeField(default=timezone.now, blank=True, null=True)
     montant = models.FloatField()
-    montant_paye = models.FloatField(blank=True, null=True, default=0)
-    montant_restant = models.FloatField(blank=True, null=True, default=0)
-    statut = models.CharField(max_length=300,choices=STATUS_TYPES,  null=True, blank=True , default=NOUVELLE)
+    statut = models.CharField(max_length=300, choices=STATUS_TYPES, null=True, blank=True, default=NOUVELLE)
     clientId = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     archived = models.BooleanField(default=False)
     date_commande = models.DateTimeField(default=timezone.now)
     numero_commande = models.CharField(max_length=4, unique=True)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='commandes', null=True, blank=True)
 
+    def update_montant_restant(self):
+        transactions = self.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        self.montant_restant = self.montant - montant_paye_total
+        self.save(update_fields=['montant_restant'])
+        
     def __str__(self):
         return str(self.nom_tissu)
 
@@ -52,7 +58,23 @@ class Commande(models.Model):
             new_numero = '0001'
         return new_numero
 
-
     @classmethod
     def total_amount(cls):
-        return cls.objects.aggregate(Sum('montant'))['montant__sum']
+        return cls.objects.aggregate(models.Sum('montant'))['montant__sum']
+
+
+   
+
+    @property
+    def montant_paye(self):
+        transactions = self.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        return montant_paye_total
+
+    @property
+    def montant_restant(self):
+        if self.montant is None:
+            return None
+        return self.montant - self.montant_paye

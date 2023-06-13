@@ -142,19 +142,24 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = ['id','albumId','album', 'images', 'createdBy','user' ]
 
 
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = '__all__'
+
 class CommandeSerializer(serializers.ModelSerializer):
     numero_commande = serializers.CharField(read_only=True)
     user = UserSerializer(read_only=True, source='createdBy')
+    transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
     client = CustomerSerializer(read_only=True, source='clientId')
+    montant_restant = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    montant_paye = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = Commande
-        fields = ('id','numero_commande','nom_tissu', 'metre_tissu', 
-        'modele', 'date_livraison', 
-        'montant', 'montant_restant', 'montant_paye', 'statut', 
-        'date_commande','clientId', 
-        'client', 'createdBy','user' )
+        fields = ('id', 'numero_commande', 'nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'montant_paye', 'montant_restant', 'statut', 'date_commande', 'clientId', 'client', 'createdBy', 'user', 'transactions')
 
     def create(self, validated_data):
         validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
         return super().create(validated_data)
+
