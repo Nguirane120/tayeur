@@ -16,4 +16,5 @@ from .album import *
 from .photos import *
 from .commande import *
 from .transaction import *
+from .entree import *
 # from .cookies import *
