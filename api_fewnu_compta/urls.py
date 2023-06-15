@@ -10,9 +10,9 @@ from .views.employee import *
 from .views.paiement import * 
 schema_view = swagger_get_schema_view(
     openapi.Info(
-        title="Fewnu Compta",
+        title="Tayeur Gestion",
         default_version='1.0.0',
-        description="API documentation of Fewnu Gestion Compta",
+        description="API documentation of Tayeur Gestion",
     ),
     public=True,
 )
@@ -58,8 +58,8 @@ urlpatterns = [
             path('entree/user/<int:id>/',views.EntreeByUser.as_view()),
 
             # company 
-            path('company/', views.CompanyAPIView.as_view()),
-            path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),
+            # path('company/', views.CompanyAPIView.as_view()),
+            # path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),
             
 
             path('mail/', views.send_email),
@@ -68,34 +68,34 @@ urlpatterns = [
             
 
             # fournisseur 
-            path('fournisseur/', views.FournisseurAPIView.as_view()),
-            path('fournisseurs/', views.FournisseurAPIListView.as_view()),
-            path('fournisseur/upload',views.FournisseurUploadFileView.as_view()),
-            path('fournisseur/export',views.FournisseurExportFileView),
-            path('fournisseur/<int:id>', views.FournisseurByIdAPIView.as_view()),
+            # path('fournisseur/', views.FournisseurAPIView.as_view()),
+            # path('fournisseurs/', views.FournisseurAPIListView.as_view()),
+            # path('fournisseur/upload',views.FournisseurUploadFileView.as_view()),
+            # path('fournisseur/export',views.FournisseurExportFileView),
+            # path('fournisseur/<int:id>', views.FournisseurByIdAPIView.as_view()),
 
             # category 
-            path('category/', views.CategoryAPIView.as_view()),
-            path('category/<int:id>/', views.CategoryByIdAPIView.as_view()),
+            # path('category/', views.CategoryAPIView.as_view()),
+            # path('category/<int:id>/', views.CategoryByIdAPIView.as_view()),
 
             # product 
-            path('product/', views.ProductAPIView.as_view()),
-            path('product/<int:id>/', views.ProductByIdAPIView.as_view()),
+            # path('product/', views.ProductAPIView.as_view()),
+            # path('product/<int:id>/', views.ProductByIdAPIView.as_view()),
 
             # vente 
-            path('vente/', views.VenteAPIView.as_view()),
-            path('vente/<int:id>/', views.VenteByIdAPIView.as_view()),
-            path('vente/mail/<int:id>/', views.SendVenteMailAPIView.as_view()),
+            # path('vente/', views.VenteAPIView.as_view()),
+            # path('vente/<int:id>/', views.VenteByIdAPIView.as_view()),
+            # path('vente/mail/<int:id>/', views.SendVenteMailAPIView.as_view()),
             # path('statistic/<str:grouped_by>/', views.StatisticByDateAPIView.as_view({'get': 'list'})),
 
 
             # article 
-            path('article/', views.ArticleAPIListView.as_view()),
-            path('article/<int:id>/', views.ArticleByIdAPIView.as_view()),
+            # path('article/', views.ArticleAPIListView.as_view()),
+            # path('article/<int:id>/', views.ArticleByIdAPIView.as_view()),
 
             # depense 
-            path('depense/', views.DepenseAPIView.as_view()),
-            path('depense/<int:id>/', views.DepenseByIdAPIView.as_view()),
+            # path('depense/', views.DepenseAPIView.as_view()),
+            # path('depense/<int:id>/', views.DepenseByIdAPIView.as_view()),
 
             # album 
             path('album/', views.AlbumAPIView.as_view()),
@@ -108,20 +108,20 @@ urlpatterns = [
             path('photos/album/<int:id>/', views.getListPhotosByAlbumId.as_view()),
 
             # achat  
-            path('achat/', views.DepenseArticleAPIListView.as_view()),
-            path('achat/<int:id>/', views.DepenseArticleByIdAPIView.as_view()),
+            # path('achat/', views.DepenseArticleAPIListView.as_view()),
+            # path('achat/<int:id>/', views.DepenseArticleByIdAPIView.as_view()),
 
-            path('statistic',views.StatisticAPIListView.as_view()),
+            # path('statistic',views.StatisticAPIListView.as_view()),
 
             #paiement
-            path('paiement/', CreationPaiementAPIView.as_view()),
-            path('paiement/<int:pk>/', ModifierPaiementAPIView.as_view()),
-            path('paiement/employee/<int:pk>/', getListPaimentByUser.as_view()),
+            # path('paiement/', CreationPaiementAPIView.as_view()),
+            # path('paiement/<int:pk>/', ModifierPaiementAPIView.as_view()),
+            # path('paiement/employee/<int:pk>/', getListPaimentByUser.as_view()),
 
             #employees
-            path('employees/', EmployeeList.as_view()),
-            path('emplyees/', CreateEmployee.as_view()),
-            path('employees/<int:pk>', DetailEmployee.as_view()),
+            # path('employees/', EmployeeList.as_view()),
+            # path('emplyees/', CreateEmployee.as_view()),
+            # path('employees/<int:pk>', DetailEmployee.as_view()),
 
         ])
     ),
