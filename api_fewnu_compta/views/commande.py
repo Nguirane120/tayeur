@@ -89,11 +89,23 @@ class CommandeByUser(generics.RetrieveAPIView):
             item = Commande.objects.filter(archived=False).filter(createdBy=id)
             serializer = CommandeSerializer(item, many=True)
             prix_total = 0  # Calcul du prix total initial
+            total_montant_avance = 0
+            total_montant_restant = 0
             for obj in serializer.data:
+                total_montant_avance += float(obj['montant_paye'])
                 prix_total += obj['montant']  # Ajout du montant de chaque objet pour calculer le prix total
+                total_montant_restant = prix_total - total_montant_avance
                 obj['prixTotal'] = prix_total  # Ajout de la clé "prixTotal" à chaque objet
+                obj['TotalAvance'] = total_montant_avance  # Ajout de la clé "TotalAvance" à chaque objet
+                obj['totalRestant'] = total_montant_restant  # Ajout de la clé "totalRestant" à chaque objet
 
-            response_data = {'prixTotal': prix_total, 'data': serializer.data}
+            response_data = {
+                'prixTotal': prix_total, 
+                'TotalAvance':total_montant_avance,
+                'totalRestant' : total_montant_restant,
+                'data': serializer.data
+                }
+            print(total_montant_restant)
             return Response(response_data)
         except Commande.DoesNotExist:
             return Response({

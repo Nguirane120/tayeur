@@ -67,9 +67,6 @@ class Commande(models.Model):
             new_numero = '0001'
         return new_numero
 
-    @classmethod
-    def total_amount(cls):
-        return cls.objects.aggregate(models.Sum('montant'))['montant__sum']
 
     def montant_paye(self):
         transactions = self.transactions.filter(archived=False)
@@ -89,3 +86,10 @@ class Commande(models.Model):
         if avance is None:
             avance = 0
         return avance
+    
+# les montants globaux
+    @classmethod
+    def total_amount(cls):
+        return cls.objects.aggregate(models.Sum('montant'))['montant__sum']
+    
+
