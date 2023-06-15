@@ -151,7 +151,7 @@ class EntreeSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='createdBy')
     class Meta:
         model = Entree
-        fields = ('id','montant_entree','date', 'createdBy', 'user')
+        fields = ('id','montant_entree','nom_entree', 'date', 'createdBy', 'user')
 
 
 class CommandeSerializer(serializers.ModelSerializer):
