@@ -51,6 +51,11 @@ urlpatterns = [
              # transaction
             path('transaction/',views.TransactionAPIView.as_view()),
             path('transaction/<int:id>/',views.TransactionByIdAPIView.as_view()),
+            
+            # commandes
+            path('entree/',views.EntreeAPIView.as_view()),
+            path('entree/<int:id>/',views.EntreeByIdAPIView.as_view()),
+            path('entree/user/<int:id>/',views.EntreeByUser.as_view()),
 
             # company 
             path('company/', views.CompanyAPIView.as_view()),

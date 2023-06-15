@@ -147,6 +147,13 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = '__all__'
 
+class EntreeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='createdBy')
+    class Meta:
+        model = Entree
+        fields = ('id','montant_entree','date', 'createdBy', 'user')
+
+
 class CommandeSerializer(serializers.ModelSerializer):
     numero_commande = serializers.CharField(read_only=True)
     user = UserSerializer(read_only=True, source='createdBy')
