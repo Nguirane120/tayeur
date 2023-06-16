@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'api_fewnu_compta.apps.ApiFewnuComptaConfig',
     'whitenoise.runserver_nostatic',
     "corsheaders",
+    "backoffice"
 ]
 
 MIDDLEWARE = [
