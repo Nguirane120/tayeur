@@ -24,6 +24,21 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
 
+    <script
+    src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script defer src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
+    {% comment %} <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> {% endcomment %}
+
+  <link
+      rel="stylesheet"
+      href="cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"
+    />
+    <script src="cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script> 
+
+
 </head>
 
 <body id="page-top">
@@ -117,6 +132,16 @@
     <!-- Page level custom scripts -->
     {% comment %} <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script> {% endcomment %}
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "order": [[0, "desc"]]
+            });
+        });
+    </script>
 
 </body>
 

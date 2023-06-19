@@ -90,4 +90,4 @@ class User(AbstractBaseUser,PermissionsMixin):
     #     app_label = "api_fewnu_compta"
 
     def __str__(self):
-        return self.email
+        return f"{self.firstName}"
