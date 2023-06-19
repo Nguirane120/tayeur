@@ -22,7 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("api_fewnu_compta.urls")),
-    path("dashboard/", include("backoffice.urls")),
+    path("tayeur-backoffice/", include("backoffice.urls")),
 
     # modification password 
     path('change_password/', auth_views.PasswordChangeView.as_view()),
