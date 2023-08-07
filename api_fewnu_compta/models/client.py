@@ -14,7 +14,7 @@ class Customer(models.Model):
     # date = models.DateTimeField(default=timezone.now)
     nom_complet = models.CharField(max_length=250)
     telephone = models.CharField(max_length=30)
-    adresse = models.CharField(max_length=250)
+    adresse = models.CharField(max_length=250, null=True, blank=True)
     pays = models.CharField(max_length=255, null=True, blank=True)
     Ville = models.CharField(max_length=255,null=True, blank=False)
     sexe = models.CharField(max_length=10,choices=SEXE,default=FEMME,)

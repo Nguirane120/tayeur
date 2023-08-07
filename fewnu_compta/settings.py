@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'api_fewnu_compta.apps.ApiFewnuComptaConfig',
     'whitenoise.runserver_nostatic',
     "corsheaders",
-    "backoffice"
+    "backoffice",
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,15 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
+GRAPH_MODELS = {
+  'app_labels': ["api_fewnu_compta.apps.ApiFewnuComptaConfig"],
+}
 
 # CORS_ALLOWED_ORIGINS = [
 #     "https://example.com",
