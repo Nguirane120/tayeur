@@ -36,7 +36,7 @@ class UserAPIView(generics.CreateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class UserById(generics.CreateAPIView):
+class UserById(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (
     #     permissions.IsAuthenticated,
     # )

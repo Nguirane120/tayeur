@@ -1,8 +1,9 @@
 from api_fewnu_compta.serializers import *
+from django.db.models import Sum
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 import io, csv, pandas as pd
-from ..models import Commande
+from ..models import *
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -86,8 +87,20 @@ class CommandeByUser(generics.RetrieveAPIView):
 
     def get(self, request, id, format=None):
         try:
-            item = Commande.objects.filter(archived=False).filter(createdBy=id)
-            serializer = CommandeSerializer(item, many=True)
+            items = Commande.objects.filter(archived=False).filter(createdBy=id)
+            serializer = CommandeSerializer(items, many=True)
+            clients = Customer.objects.filter(commande__in=items).distinct()
+
+            # Liste pour stocker les informations des clients avec les avances
+            clients_info = []
+
+            for client in clients:
+                client_info = {
+                    'client': CustomerSerializer(client).data,
+                    'total_avance': items.filter(clientId=client).aggregate(Sum('montant'))['montant__sum'],
+                }
+                clients_info.append(client_info) 
+
             prix_total = 0  # Calcul du prix total initial
             total_montant_avance = 0
             total_montant_restant = 0
@@ -103,9 +116,10 @@ class CommandeByUser(generics.RetrieveAPIView):
                 'prixTotal': prix_total, 
                 'TotalAvance':total_montant_avance,
                 'totalRestant' : total_montant_restant,
-                'data': serializer.data
+                'data': serializer.data,
+                'clients': clients_info,
                 }
-            print(total_montant_restant)
+            # print(total_montant_restant)
             return Response(response_data)
         except Commande.DoesNotExist:
             return Response({
