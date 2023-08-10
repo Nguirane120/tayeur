@@ -178,6 +178,13 @@ class CommandeSerializer(serializers.ModelSerializer):
             montant_paye_total = 0
         return instance.montant - montant_paye_total
 
+class CommandeSemaineProchaineSerializer(serializers.ModelSerializer):
+     # Modifier cette ligne
+    client = CustomerSerializer(read_only=True, source='clientId')
+ 
+    class Meta:
+        model = Commande
+        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
 
 
 

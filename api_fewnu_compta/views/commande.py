@@ -108,6 +108,15 @@ class CommandeByUser(generics.RetrieveAPIView):
                 # statut="terminee",
                 date_livraison__range=[today, end_of_week]
             )
+
+            today = datetime.now().date()
+            start_of_next_week = today + timedelta(days=(7 - today.weekday()))
+            end_of_next_week = start_of_next_week + timedelta(days=6)
+   
+            commandes_a_livrer_semaine_prochaine = Commande.objects.filter(date_livraison__range=[start_of_next_week, end_of_next_week])
+            commandes_serializer = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
+
+   
             serializer = CommandeSerializer(items, many=True)
             clients = Customer.objects.filter(commande__in=items).distinct()
 
@@ -132,6 +141,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 obj['TotalAvance'] = total_montant_avance  # Ajout de la clé "TotalAvance" à chaque objet
                 obj['totalRestant'] = total_montant_restant  # Ajout de la clé "totalRestant" à chaque objet
 
+
             response_data = {
                 'prixTotal': prix_total, 
                 'TotalAvance':total_montant_avance,
@@ -139,6 +149,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 'data': serializer.data,
                 'clients': clients_info,
                 # "commandes_a_livrer":commandes_a_livrer
+                "commandes_a_livrer_semaine_prochaine":commandes_serializer.data
                 }
             # print(total_montant_restant)
             return Response(response_data)
