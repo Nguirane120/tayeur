@@ -1,5 +1,5 @@
 from django.db import models
-
+from api_fewnu_compta.models import User
 
 class Employee(models.Model):
 
@@ -12,8 +12,10 @@ class Employee(models.Model):
     photo = models.ImageField(upload_to='uploads/employee', blank=True)
     contrat = models.CharField(max_length=125)
     poste = models.CharField(max_length=125)
-    date_debut = models.DateTimeField(auto_now_add=True)
-    date_fin = models.DateTimeField(auto_now_add=True)
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    # date_debut = models.DateTimeField(auto_now_add=True)
+    # date_fin = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False)
 
     def __str__(self) -> str:

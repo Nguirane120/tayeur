@@ -13,6 +13,7 @@ from .models import Employee
 from .models import Paiement
 from .models import Album
 from .models import Photo
+from .models import Profile
 
 class UserAdmin(admin.ModelAdmin):
     pass
@@ -66,3 +67,4 @@ admin.site.register(Employee)
 admin.site.register(Paiement)
 admin.site.register(Commande)
 admin.site.register(Transaction)
+admin.site.register(Profile)

@@ -15,3 +15,4 @@ from .photos import Photo
 from .commande import *
 from .transaction import *
 from .entree import *
+from .profile import *

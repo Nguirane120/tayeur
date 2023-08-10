@@ -2,6 +2,7 @@ from api_fewnu_compta import models
 from api_fewnu_compta.models import User
 from api_fewnu_compta.models import Customer
 from api_fewnu_compta.models import Commande
+from api_fewnu_compta.models import Profile
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import *
@@ -177,3 +178,11 @@ class CommandeSerializer(serializers.ModelSerializer):
             montant_paye_total = 0
         return instance.montant - montant_paye_total
 
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields ='__all__'
+        # depth = 1

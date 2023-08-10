@@ -8,6 +8,7 @@ from . import views
 from django.conf.urls.static import static 
 from .views.employee import *
 from .views.paiement import * 
+# from ..gestion_horaire.views import *
 schema_view = swagger_get_schema_view(
     openapi.Info(
         title="Tayeur Gestion",
@@ -58,8 +59,8 @@ urlpatterns = [
             path('entree/user/<int:id>/',views.EntreeByUser.as_view()),
 
             # company 
-            # path('company/', views.CompanyAPIView.as_view()),
-            # path('company/<int:id>/', views.CompanyByIdAPIView.as_view()),
+            path('profiles/', views.ProfileList.as_view()),
+            # path('profiles/<int:id>/', views.CompanyByIdAPIView.as_view()),
             
 
             path('mail/', views.send_email),

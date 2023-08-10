@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     "corsheaders",
     "backoffice",
-    'django_extensions'
+    'django_extensions',
+    "gestion_horaire",
 ]
 
 MIDDLEWARE = [

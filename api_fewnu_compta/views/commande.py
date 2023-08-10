@@ -1,10 +1,13 @@
 from api_fewnu_compta.serializers import *
 from django.db.models import Sum
 from rest_framework import generics, permissions, status
+from django.utils import timezone
+from datetime import timedelta
 from rest_framework.response import Response
 import io, csv, pandas as pd
 from ..models import *
 from django.http import HttpResponse
+from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -87,7 +90,24 @@ class CommandeByUser(generics.RetrieveAPIView):
 
     def get(self, request, id, format=None):
         try:
-            items = Commande.objects.filter(archived=False).filter(createdBy=id)
+            # today = timezone.now().date()
+
+            # # Calculer le début et la fin de la semaine en cours (lundi à dimanche)
+            # debut_semaine = today - timedelta(days=today.weekday())
+            # fin_semaine = debut_semaine + timedelta(days=6)
+
+            today = datetime.now().date()
+            end_of_week = today + timedelta(days=(6 - today.weekday()))  # Calcul de la fin de la semaine
+    
+            # commandes_a_livrer = Commande.objects.filter(date_livraison__range=[today, end_of_week])
+    
+
+            items = Commande.objects.filter(
+                archived=False,
+                createdBy=id,
+                # statut="terminee",
+                date_livraison__range=[today, end_of_week]
+            )
             serializer = CommandeSerializer(items, many=True)
             clients = Customer.objects.filter(commande__in=items).distinct()
 
@@ -118,6 +138,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 'totalRestant' : total_montant_restant,
                 'data': serializer.data,
                 'clients': clients_info,
+                # "commandes_a_livrer":commandes_a_livrer
                 }
             # print(total_montant_restant)
             return Response(response_data)
