@@ -187,9 +187,19 @@ class CommandeSemaineProchaineSerializer(serializers.ModelSerializer):
         fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
 
 
+class CommandeMoisProchainSerializer(serializers.ModelSerializer):
+    client = CustomerSerializer(read_only=True, source='clientId')
+
+    class Meta:
+        model = Commande
+        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
+
+
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='userId')
+
     class Meta:
         model = Profile
-        fields ='__all__'
+        fields =('userId', 'user', 'description', 'numWhtsapp', 'pays', 'ville', 'images', 'profile_image', ) 
         # depth = 1

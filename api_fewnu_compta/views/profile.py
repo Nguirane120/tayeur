@@ -23,10 +23,26 @@ class ProfileList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-           
     def get(self, request, format=None):
         items = Profile.objects.all()
         serializer = ProfileSerializer(items, many=True)
         return Response(serializer.data)
         
+
+
+
+class ProfileByUser(generics.RetrieveAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    # permission_classes = []
+
+    def get(self, request, id, format=None):
+        try:
+            item = Profile.objects.filter(userId=id)
+            serializer = ProfileSerializer(item,many=True)
+            return Response(serializer.data)
+        except Profile.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)

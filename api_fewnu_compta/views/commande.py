@@ -7,7 +7,7 @@ from rest_framework.response import Response
 import io, csv, pandas as pd
 from ..models import *
 from django.http import HttpResponse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,date
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -116,6 +116,16 @@ class CommandeByUser(generics.RetrieveAPIView):
             commandes_a_livrer_semaine_prochaine = Commande.objects.filter(date_livraison__range=[start_of_next_week, end_of_next_week])
             commandes_serializer = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
 
+
+
+            today = date.today()
+            next_month = today.replace(day=1) + timedelta(days=32)  # Ajoute 32 jours pour être sûr d'aller au mois suivant
+            start_of_next_month = next_month.replace(day=1)
+            end_of_next_month = start_of_next_month.replace(month=start_of_next_month.month + 1, day=1) - timedelta(days=1)
+
+            commandes_mois_prochain = Commande.objects.filter(date_livraison__range=[start_of_next_month, end_of_next_month])
+            commandes_serializer = CommandeMoisProchainSerializer(commandes_mois_prochain, many=True)
+
    
             serializer = CommandeSerializer(items, many=True)
             clients = Customer.objects.filter(commande__in=items).distinct()
@@ -149,7 +159,8 @@ class CommandeByUser(generics.RetrieveAPIView):
                 'data': serializer.data,
                 'clients': clients_info,
                 # "commandes_a_livrer":commandes_a_livrer
-                "commandes_a_livrer_semaine_prochaine":commandes_serializer.data
+                "commandes_a_livrer_semaine_prochaine":commandes_serializer.data,
+                'commandes_mois_prochain': commandes_serializer.data
                 }
             # print(total_montant_restant)
             return Response(response_data)

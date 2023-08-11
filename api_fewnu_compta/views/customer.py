@@ -129,7 +129,7 @@ class CustomerByUser(generics.RetrieveAPIView):
     def get(self, request, id, format=None):
         try:
             item = Customer.objects.filter(archived=False).filter(createdBy=id)
-            print("List des client by user ", item)
+        
             serializer = CustomerSerializer(item,many=True)
             return Response(serializer.data)
         except Customer.DoesNotExist:

@@ -60,6 +60,7 @@ urlpatterns = [
 
             # company 
             path('profiles/', views.ProfileList.as_view()),
+            path('profiles/user/<int:id>/', views.ProfileByUser.as_view()),
             # path('profiles/<int:id>/', views.CompanyByIdAPIView.as_view()),
             
 
