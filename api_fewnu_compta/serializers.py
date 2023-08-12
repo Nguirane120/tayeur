@@ -195,6 +195,14 @@ class CommandeMoisProchainSerializer(serializers.ModelSerializer):
         fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
 
 
+class CommandeCurrenSemaine(serializers.ModelSerializer):
+    client = CustomerSerializer(read_only=True, source='clientId')
+
+    class Meta:
+        model = Commande
+        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
+
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='userId')

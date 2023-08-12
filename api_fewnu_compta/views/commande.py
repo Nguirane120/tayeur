@@ -97,16 +97,20 @@ class CommandeByUser(generics.RetrieveAPIView):
             # fin_semaine = debut_semaine + timedelta(days=6)
 
             today = datetime.now().date()
-            end_of_week = today + timedelta(days=(6 - today.weekday()))  # Calcul de la fin de la semaine
+            start_of_week = today - timedelta(days=today.weekday())
+            end_of_week = start_of_week + timedelta(days=6) # Calcul de la fin de la semaine
     
             # commandes_a_livrer = Commande.objects.filter(date_livraison__range=[today, end_of_week])
-    
+
+            commandes_a_livrer_dans_la_semaine = Commande.objects.filter(date_livraison__range=[start_of_week, end_of_week])
+
+            livrer_dans_la_semaine = CommandeCurrenSemaine(commandes_a_livrer_dans_la_semaine, many=True)
 
             items = Commande.objects.filter(
                 archived=False,
                 createdBy=id,
                 # statut="terminee",
-                date_livraison__range=[today, end_of_week]
+            
             )
 
             today = datetime.now().date()
@@ -114,7 +118,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             end_of_next_week = start_of_next_week + timedelta(days=6)
    
             commandes_a_livrer_semaine_prochaine = Commande.objects.filter(date_livraison__range=[start_of_next_week, end_of_next_week])
-            commandes_serializer = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
+            livrer_semaine_prochaine = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
 
 
 
@@ -124,7 +128,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             end_of_next_month = start_of_next_month.replace(month=start_of_next_month.month + 1, day=1) - timedelta(days=1)
 
             commandes_mois_prochain = Commande.objects.filter(date_livraison__range=[start_of_next_month, end_of_next_month])
-            commandes_serializer = CommandeMoisProchainSerializer(commandes_mois_prochain, many=True)
+            livrer_mois_prochain = CommandeMoisProchainSerializer(commandes_mois_prochain, many=True)
 
    
             serializer = CommandeSerializer(items, many=True)
@@ -159,8 +163,9 @@ class CommandeByUser(generics.RetrieveAPIView):
                 'data': serializer.data,
                 'clients': clients_info,
                 # "commandes_a_livrer":commandes_a_livrer
-                "commandes_a_livrer_semaine_prochaine":commandes_serializer.data,
-                'commandes_mois_prochain': commandes_serializer.data
+                "livrer_semaine_prochaine":livrer_semaine_prochaine.data,
+                'livrer_mois_prochain': livrer_mois_prochain.data,
+                'livrer_dans_la_semaine': livrer_dans_la_semaine.data,
                 }
             # print(total_montant_restant)
             return Response(response_data)
