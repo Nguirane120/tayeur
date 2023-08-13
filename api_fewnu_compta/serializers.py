@@ -3,6 +3,7 @@ from api_fewnu_compta.models import User
 from api_fewnu_compta.models import Customer
 from api_fewnu_compta.models import Commande
 from api_fewnu_compta.models import Profile
+from api_fewnu_compta.models import Parametre,ParametreImage
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import *
@@ -210,4 +211,38 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields =('userId', 'user', 'description', 'numWhtsapp', 'pays', 'ville', 'images', 'profile_image', ) 
-        # depth = 1
+
+
+
+
+class ParametreImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParametreImage
+        fields = ('id','parametre', 'image', )
+
+class ParametreSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='userId')
+    images = ParametreImageSerializer(many=True, read_only=True) 
+    uploaded_images = serializers.ListField(
+        child = serializers.ImageField(max_length = 1000000, allow_empty_file = False, use_url = False),
+        write_only=True)
+
+    class Meta:
+        model = Parametre
+        fields = ('userId', 'user', 'description', 'numWhtsapp', 'pays', 'ville', 'profile_image', 'nom_attelier','images', 'uploaded_images')
+       
+
+
+    def create(self, validated_data):
+        uploaded_image = validated_data.pop('uploaded_images')
+        parametre = Parametre.objects.create(**validated_data)
+        for image_data in uploaded_image:
+            ParametreImage.objects.create(parametre=parametre, image=image_data)
+        return parametre
+
+    # def update(self, instance, validated_data):
+    #     images_data = validated_data.pop('images', [])
+    #     instance = super().update(instance, validated_data)
+    #     for image_data in images_data:
+    #         ParametreImage.objects.create(parametre=instance, image=image_data)
+    #     return instance

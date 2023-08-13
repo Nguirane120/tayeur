@@ -58,9 +58,13 @@ urlpatterns = [
             path('entree/<int:id>/',views.EntreeByIdAPIView.as_view()),
             path('entree/user/<int:id>/',views.EntreeByUser.as_view()),
 
-            # company 
+            # profile 
             path('profiles/', views.ProfileList.as_view()),
             path('profiles/user/<int:id>/', views.ProfileByUser.as_view()),
+            
+            #parametre
+            path('parametres/', views.ParametreList.as_view()),
+            path('parametres/user/<int:id>/', views.ParametreByUser.as_view()),
             # path('profiles/<int:id>/', views.CompanyByIdAPIView.as_view()),
             
 

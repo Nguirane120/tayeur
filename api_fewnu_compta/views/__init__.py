@@ -18,4 +18,5 @@ from .commande import *
 from .transaction import *
 from .entree import *
 from .profile import *
+from .parametre import *
 # from .cookies import *

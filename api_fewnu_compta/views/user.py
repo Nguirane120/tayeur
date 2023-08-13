@@ -2,14 +2,15 @@ from rest_framework import generics, permissions, status
 from api_fewnu_compta.serializers import *
 from django.contrib.auth import authenticate, login
 from rest_framework.response import Response
+from ..models import Parametre
 
 # list user 
-class UserAPIView(generics.CreateAPIView):
+class UserAPIView(generics.ListCreateAPIView):
     """
     GET api/v1/users/
     POST api/v1/users/
     """
-    # queryset = User.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
@@ -22,10 +23,19 @@ class UserAPIView(generics.CreateAPIView):
 
         serializer = UserSerializer(user, many=True)
 
+        parametres = Parametre.objects.filter(userId__in=user)
+        parametre_serializer = ParametreSerializer(parametres, many=True)
+
+        user_data = serializer.data
+        parametre_data = parametre_serializer.data
+
+
+        for user, parametre in zip(user_data, parametre_data):
+            user['parametre'] = parametre
+
         return Response({
             "status": "success",
-            "message": "user successfully retrieved.",
-            "count": user.count(),
+            # "count": user.count(),
             "data": serializer.data
         }, status=status.HTTP_200_OK)
 
