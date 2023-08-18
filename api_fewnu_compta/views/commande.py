@@ -64,7 +64,7 @@ class CommandeByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
                 "message": "no such item with this id",
                 }, status=404)
         self.data = request.data.copy()        
-        serializer = CommandeSerializer(item, data= self.data, partial= True)
+        serializer = CommandeSerializer(item, data=self.data, partial= True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -156,6 +156,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 obj['totalRestant'] = total_montant_restant  # Ajout de la clé "totalRestant" à chaque objet
 
 
+            total_commandes = items.count()
             response_data = {
                 'prixTotal': prix_total, 
                 'TotalAvance':total_montant_avance,
@@ -166,6 +167,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 "livrer_semaine_prochaine":livrer_semaine_prochaine.data,
                 'livrer_mois_prochain': livrer_mois_prochain.data,
                 'livrer_dans_la_semaine': livrer_dans_la_semaine.data,
+                "totalCommandes":total_commandes
                 }
             # print(total_montant_restant)
             return Response(response_data)

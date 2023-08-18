@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import  HoraireList
+from .views import  HoraireList, HoraireByUser
 
 urlpatterns = [
-    path('horaires/', HoraireList.as_view(), name='horaire-list'),
+    path('horraires/', HoraireList.as_view(), name='horaire-list'),
+    path('horraires/user/<int:id>/', HoraireByUser.as_view(), name='horaire-list-by-user'),
 ]

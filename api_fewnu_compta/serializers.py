@@ -225,8 +225,8 @@ class ParametreSerializer(serializers.ModelSerializer):
     images = ParametreImageSerializer(many=True, read_only=True) 
     uploaded_images = serializers.ListField(
         child = serializers.ImageField(max_length = 1000000, allow_empty_file = False, use_url = False),
-        write_only=True)
-
+        write_only=True, required=False)
+    
     class Meta:
         model = Parametre
         fields = ('userId', 'user', 'description', 'numWhtsapp', 'pays', 'ville', 'profile_image', 'nom_attelier','images', 'uploaded_images')
@@ -234,7 +234,7 @@ class ParametreSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        uploaded_image = validated_data.pop('uploaded_images')
+        uploaded_image = validated_data.pop('uploaded_images', [])
         parametre = Parametre.objects.create(**validated_data)
         for image_data in uploaded_image:
             ParametreImage.objects.create(parametre=parametre, image=image_data)
@@ -246,3 +246,11 @@ class ParametreSerializer(serializers.ModelSerializer):
     #     for image_data in images_data:
     #         ParametreImage.objects.create(parametre=instance, image=image_data)
     #     return instance
+
+
+
+from rest_framework import serializers
+
+class MessageSerializer(serializers.Serializer):
+    to_number = serializers.CharField()
+    body = serializers.CharField()

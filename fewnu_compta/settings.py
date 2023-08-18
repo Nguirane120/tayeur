@@ -10,10 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import dj_database_url
+import firebase_admin
+# from firebase_admin import credentials
 import os
 
 from dotenv import load_dotenv
-
+import django
+import os
+import json
+# import firebase_admin
+# from firebase_admin import credentials
 # Load environment variables from .env file
 load_dotenv()
 
@@ -31,6 +37,14 @@ SECRET_KEY = 'yjbae$vgtfdjk3y1)er)m4n(*9)4f528owz8*vm6p*du3qj(+p'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+# cred = credentials.Certificate(os.path.join(BASE_DIR, "firebase/credentials.json"))
+# firebase_admin.initialize_app(cred)
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fewnu_compta.settings")
+# django.setup()
+
+
+
 
 # Application definition
 
@@ -77,6 +91,16 @@ GRAPH_MODELS = {
   'app_labels': ["api_fewnu_compta.apps.ApiFewnuComptaConfig"],
 }
 
+
+
+
+
+
+# cred = credentials.Certificate(os.path.join(BASE_DIR, "firebase/credentials.json"))
+# firebase_admin.initialize_app(cred)
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fewnu_compta.settings")
+# django.setup()
+
 # CORS_ALLOWED_ORIGINS = [
 #     "https://example.com",
 #     "https://sub.example.com",
@@ -104,6 +128,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+twilio_phone_number = "764553046"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

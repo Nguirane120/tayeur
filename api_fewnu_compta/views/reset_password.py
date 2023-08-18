@@ -1,40 +1,33 @@
-# from rest_framework import status
-# from rest_framework import generics
-# from rest_framework.response import Response
-# from django.contrib.auth.models import User
-# from api_fewnu_compta.serializers import *
-# from rest_framework.permissions import IsAuthenticated   
+from django.conf import settings
+from ..serializers import MessageSerializer
+import os
+import twilio
+import twilio.rest
+from twilio.rest import Client
 
-# class ChangePasswordView(generics.UpdateAPIView):
-#     """
-#     An endpoint for changing password.
-#     """
-#     serializer_class = ChangePasswordSerializer
-#     model = User
-#     permission_classes = (IsAuthenticated,)
+from django.conf import settings
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-#     def get_object(self, queryset=None):
-#         obj = self.request.user
-#         return obj
+import twilio
+import twilio.rest
 
-#     def update(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         serializer = self.get_serializer(data=request.data)
 
-#         if serializer.is_valid():
-#             # Check old password
-#             if not self.object.check_password(serializer.data.get("old_password")):
-#                 return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-#             # set_password also hashes the password that the user will get
-#             self.object.set_password(serializer.data.get("new_password"))
-#             self.object.save()
-#             response = {
-#                 'status': 'success',
-#                 'code': status.HTTP_200_OK,
-#                 'message': 'Password updated successfully',
-#                 'data': []
-#             }
 
-#             return Response(response)
+class SendTwilioMessageView(APIView):
+    def post(self, request, *args, **kwargs):
+        account_sid = os.environ['TWILIO_ACCOUNT_SID']
+        auth_token = os.environ['TWILIO_AUTH_TOKEN']
+        client = Client(account_sid, auth_token)
 
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        message = client.messages \
+                .create(
+                     body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+                     from_='+15005550006',
+                     to='+15558675310'
+                 )
+
+        
+
+        return Response({"message_id": message.sid})

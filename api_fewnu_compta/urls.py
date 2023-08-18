@@ -8,6 +8,7 @@ from . import views
 from django.conf.urls.static import static 
 from .views.employee import *
 from .views.paiement import * 
+from .views import SendTwilioMessageView
 # from ..gestion_horaire.views import *
 schema_view = swagger_get_schema_view(
     openapi.Info(
@@ -66,6 +67,8 @@ urlpatterns = [
             path('parametres/', views.ParametreList.as_view()),
             path('parametres/user/<int:id>/', views.ParametreByUser.as_view()),
             # path('profiles/<int:id>/', views.CompanyByIdAPIView.as_view()),
+
+            path('envoyer-message/', SendTwilioMessageView.as_view(), name='envoyer-message'),
             
 
             path('mail/', views.send_email),
