@@ -19,5 +19,5 @@ from .transaction import *
 from .entree import *
 from .profile import *
 from .parametre import *
-from .reset_password import *
+# from .reset_password import *
 # from .cookies import *
