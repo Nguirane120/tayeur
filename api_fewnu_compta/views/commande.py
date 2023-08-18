@@ -102,7 +102,7 @@ class CommandeByUser(generics.RetrieveAPIView):
     
             # commandes_a_livrer = Commande.objects.filter(date_livraison__range=[today, end_of_week])
 
-            commandes_a_livrer_dans_la_semaine = Commande.objects.filter(date_livraison__range=[start_of_week, end_of_week])
+            commandes_a_livrer_dans_la_semaine = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_week, end_of_week])
 
             livrer_dans_la_semaine = CommandeCurrenSemaine(commandes_a_livrer_dans_la_semaine, many=True)
 
@@ -117,7 +117,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             start_of_next_week = today + timedelta(days=(7 - today.weekday()))
             end_of_next_week = start_of_next_week + timedelta(days=6)
    
-            commandes_a_livrer_semaine_prochaine = Commande.objects.filter(date_livraison__range=[start_of_next_week, end_of_next_week])
+            commandes_a_livrer_semaine_prochaine = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_next_week, end_of_next_week])
             livrer_semaine_prochaine = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
 
 
@@ -127,7 +127,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             start_of_next_month = next_month.replace(day=1)
             end_of_next_month = start_of_next_month.replace(month=start_of_next_month.month + 1, day=1) - timedelta(days=1)
 
-            commandes_mois_prochain = Commande.objects.filter(date_livraison__range=[start_of_next_month, end_of_next_month])
+            commandes_mois_prochain = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_next_month, end_of_next_month])
             livrer_mois_prochain = CommandeMoisProchainSerializer(commandes_mois_prochain, many=True)
 
    
@@ -155,8 +155,7 @@ class CommandeByUser(generics.RetrieveAPIView):
                 obj['TotalAvance'] = total_montant_avance  # Ajout de la clé "TotalAvance" à chaque objet
                 obj['totalRestant'] = total_montant_restant  # Ajout de la clé "totalRestant" à chaque objet
 
-
-            total_commandes = items.count()
+            total_commandes =  len(livrer_dans_la_semaine.data) + len(livrer_semaine_prochaine.data) + len(livrer_mois_prochain.data)
             response_data = {
                 'prixTotal': prix_total, 
                 'TotalAvance':total_montant_avance,
