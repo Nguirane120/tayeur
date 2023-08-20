@@ -42,7 +42,7 @@ class Commande(models.Model):
         if montant_paye_total is None:
             montant_paye_total = 0
         self._montant_restant = self.montant - montant_paye_total
-        print(self._montant_restant)
+        # print(self._montant_restant)
 
     def update_avance(self):
         transactions = self.transactions.filter(archived=False)

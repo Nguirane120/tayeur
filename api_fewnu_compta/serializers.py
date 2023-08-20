@@ -145,9 +145,10 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='createdBy')
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ('id','commande', 'montant_paye', 'date_transaction', 'archived', 'createdBy', 'user')
 
 class EntreeSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='createdBy')
@@ -175,9 +176,16 @@ class CommandeSerializer(serializers.ModelSerializer):
     def get_montant_restant(self, instance):
         transactions = instance.transactions.filter(archived=False)
         montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        
         if montant_paye_total is None:
             montant_paye_total = 0
-        return instance.montant - montant_paye_total
+        
+        montant_restant = instance.montant - montant_paye_total
+        if montant_restant < 0:  # Si le montant restant est négatif, assurez-vous qu'il est fixé à zéro
+            montant_restant = 0
+        
+        return  montant_restant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
 
 class CommandeSemaineProchaineSerializer(serializers.ModelSerializer):
      # Modifier cette ligne

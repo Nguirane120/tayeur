@@ -76,5 +76,24 @@ class TransactionByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
         item.archived=True
         item.save()
         return Response({"message": "deleted"},status=204)
+    
+
+
+class TransactionByUser(generics.RetrieveAPIView):
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
+    def get(self, request, id, format=None):
+        try:
+            item = Transaction.objects.filter(archived=False).get(pk=id)
+            serializer = TransactionSerializer(item)
+            return Response(serializer.data)
+        except Transaction.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+
+
+
 
 

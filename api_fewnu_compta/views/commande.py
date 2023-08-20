@@ -153,20 +153,21 @@ class CommandeByUser(generics.RetrieveAPIView):
                 total_montant_restant = prix_total - total_montant_avance
                 obj['prixTotal'] = prix_total  # Ajout de la clé "prixTotal" à chaque objet
                 obj['TotalAvance'] = total_montant_avance  # Ajout de la clé "TotalAvance" à chaque objet
-                obj['totalRestant'] = total_montant_restant  # Ajout de la clé "totalRestant" à chaque objet
-
-            total_commandes =  len(livrer_dans_la_semaine.data) + len(livrer_semaine_prochaine.data) + len(livrer_mois_prochain.data)
+                obj['totalRestant'] = obj['montant'] - float(obj['montant_paye'])  # Calcul du montant restant correct
+                
+        
             response_data = {
                 'prixTotal': prix_total, 
                 'TotalAvance':total_montant_avance,
                 'totalRestant' : total_montant_restant,
+                "total_commandes": items.count(),
                 'data': serializer.data,
                 'clients': clients_info,
                 # "commandes_a_livrer":commandes_a_livrer
                 "livrer_semaine_prochaine":livrer_semaine_prochaine.data,
                 'livrer_mois_prochain': livrer_mois_prochain.data,
                 'livrer_dans_la_semaine': livrer_dans_la_semaine.data,
-                "totalCommandes":total_commandes
+                
                 }
             # print(total_montant_restant)
             return Response(response_data)
@@ -175,6 +176,9 @@ class CommandeByUser(generics.RetrieveAPIView):
                 "status": "failure",
                 "message": "no such item with this id",
             }, status=404)
+
+
+
 
 
 
