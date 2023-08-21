@@ -127,9 +127,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-twilio_phone_number = "764553046"
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
