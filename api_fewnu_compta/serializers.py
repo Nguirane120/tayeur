@@ -189,36 +189,97 @@ class CommandeSerializer(serializers.ModelSerializer):
 
 class CommandeSemaineProchaineSerializer(serializers.ModelSerializer):
      # Modifier cette ligne
+    user = UserSerializer(read_only=True, source='createdBy')
+    transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
     client = CustomerSerializer(read_only=True, source='clientId')
- 
+    montant_restant = serializers.SerializerMethodField()
+    montant_paye = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
     class Meta:
         model = Commande
-        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
+        fields = ('id', 'numero_commande', 'nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'montant_paye', 'montant_restant', 'statut', 'date_commande', 'clientId', 'client', 'createdBy', 'user', 'transactions')
+
+    def create(self, validated_data):
+        validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
+        return super().create(validated_data)
+    
+    def get_montant_restant(self, instance):
+        transactions = instance.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        
+        montant_restant = instance.montant - montant_paye_total
+        if montant_restant < 0:  # Si le montant restant est négatif, assurez-vous qu'il est fixé à zéro
+            montant_restant = 0
+        
+        return  montant_restant   
 
 
 class CommandeMoisProchainSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='createdBy')
+    transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
     client = CustomerSerializer(read_only=True, source='clientId')
+    montant_restant = serializers.SerializerMethodField()
+    montant_paye = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = Commande
-        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
+        fields = ('id', 'numero_commande', 'nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'montant_paye', 'montant_restant', 'statut', 'date_commande', 'clientId', 'client', 'createdBy', 'user', 'transactions')
+
+    def create(self, validated_data):
+        validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
+        return super().create(validated_data)
+    
+    def get_montant_restant(self, instance):
+        transactions = instance.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        
+        montant_restant = instance.montant - montant_paye_total
+        if montant_restant < 0:  # Si le montant restant est négatif, assurez-vous qu'il est fixé à zéro
+            montant_restant = 0
+        
+        return  montant_restant   
 
 
 class CommandeCurrenSemaine(serializers.ModelSerializer):
     client = CustomerSerializer(read_only=True, source='clientId')
+    transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
+    client = CustomerSerializer(read_only=True, source='clientId')
+    montant_restant = serializers.SerializerMethodField()
+    montant_paye = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = Commande
-        fields = ('id', 'modele', 'date_livraison','statut', 'date_commande', 'clientId', 'client')
+        fields = ('id', 'numero_commande', 'nom_tissu', 'metre_tissu', 'modele', 'date_livraison', 'montant', 'montant_paye', 'montant_restant', 'statut', 'date_commande', 'clientId', 'client', 'createdBy', 'user', 'transactions')
+
+    def create(self, validated_data):
+        validated_data['numero_commande'] = Commande.generate_unique_numero_commande()
+        return super().create(validated_data)
+    
+    def get_montant_restant(self, instance):
+        transactions = instance.transactions.filter(archived=False)
+        montant_paye_total = transactions.aggregate(total=models.Sum('montant_paye'))['total']
+        
+        if montant_paye_total is None:
+            montant_paye_total = 0
+        
+        montant_restant = instance.montant - montant_paye_total
+        if montant_restant < 0:  # Si le montant restant est négatif, assurez-vous qu'il est fixé à zéro
+            montant_restant = 0
+        
+        return  montant_restant                   
 
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='userId')
 
-    class Meta:
-        model = Profile
-        fields =('userId', 'user', 'description', 'numWhtsapp', 'pays', 'ville', 'images', 'profile_image', ) 
+    
 
 
 
