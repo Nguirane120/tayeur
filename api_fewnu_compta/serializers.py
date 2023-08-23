@@ -279,7 +279,9 @@ class CommandeCurrenSemaine(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='userId')
 
-    
+    class Meta:
+       model = Profile
+       fields = ('id','phone', 'firstName', 'lastName', 'email', 'userId','user', 'description', 'numWhtsapp', 'pays', 'ville', 'images', 'profile_image', 'nom_attelier', )
 
 
 
