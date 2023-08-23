@@ -2,9 +2,16 @@
 
 {% block content %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  {% for message in messages %}
+  <div class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
+     {{ message }}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>  
+      </div>
+ {% endfor %}
     <h1 class="h3 mb-0 text-gray-800">Liste des utilisateurs</h1>
-  {% comment %} <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> {% endcomment %}
+
         </div>
         {% include 'backoffice/users/data.html' %}
 {% endblock content %}
