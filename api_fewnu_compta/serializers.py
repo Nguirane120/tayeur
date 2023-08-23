@@ -247,6 +247,7 @@ class CommandeMoisProchainSerializer(serializers.ModelSerializer):
 
 
 class CommandeCurrenSemaine(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, source='createdBy')
     client = CustomerSerializer(read_only=True, source='clientId')
     transactions = TransactionSerializer(many=True, read_only=True)  # Modifier cette ligne
     client = CustomerSerializer(read_only=True, source='clientId')

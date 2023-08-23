@@ -18,9 +18,10 @@
                     <th>Nom</th>
                     <th>Telephone</th>
                     <th>Adresse</th>
-                    <th>Email</th>
+                    {% comment %} <th>Email</th> {% endcomment %}
 
                     {% comment %} <th>Actions</th>  {% endcomment %}
+                    <td>Actions</td>
 
                 </tr>
 
@@ -38,11 +39,7 @@
                       <td>{{user.lastName}}</td>
 
                       <td>{{user.phone}}</td>
-                      {% if user.email is none%}
-                      <td>Pas d'email</td>
-                      {% else %}
-                            <td>user.email</td>
-                      {% endif %}
+                      
                       <td>{{user.adresse}}</td>
 
                       {% comment %} <td>{{ user.date_joinde }}</td> {% endcomment %}
@@ -55,13 +52,13 @@
 
                         
 
-                        {% comment %} <td class='text-center'>
+                        <td class='text-center'>
 
-                            <a href="{% url 'update-user' user.id %}" class="p-4"><i class="fas fa-edit text-primary"></i></a>
+                            <a href="{% url 'user-detail' user.id %}" class="p-4"><i class="fas fa-eye text-primary"></i></a>
 
-                            <a href="{% url 'delete-user' user.id %}"><i class="fas fa-trash text-danger"></i></a>
+                            <a href=""><i class="fas fa-trash text-danger"></i></a>
 
-                          </td> {% endcomment %}
+                          </td> 
 
                     
 
