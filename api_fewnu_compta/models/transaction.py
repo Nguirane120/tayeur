@@ -9,7 +9,7 @@ class Transaction(models.Model):
     montant_paye = models.FloatField(blank=True, null=True, default=0)
     date_transaction = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False)
-    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

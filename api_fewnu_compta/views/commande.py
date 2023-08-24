@@ -73,6 +73,14 @@ class CommandeByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
     # def delete(self, request, id, format=None):
     def delete(self, request, *args, **kwargs):
         try:
+            # today = datetime.now().date()
+            # start_of_week = today - timedelta(days=today.weekday())
+            # end_of_week = start_of_week + timedelta(days=6)
+
+            # today = datetime.now().date()
+            # start_of_next_week = today + timedelta(days=(7 - today.weekday()))
+            # end_of_next_week = start_of_next_week + timedelta(days=6)
+
             item = Commande.objects.filter(archived=False).get(id=kwargs["id"])
         except Commande.DoesNotExist:
             return Response({
@@ -102,12 +110,13 @@ class CommandeByUser(generics.RetrieveAPIView):
     
             # commandes_a_livrer = Commande.objects.filter(date_livraison__range=[today, end_of_week])
 
-            commandes_a_livrer_dans_la_semaine = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_week, end_of_week])
+            commandes_a_livrer_dans_la_semaine = Commande.objects.filter(archived=False,createdBy=id,date_livraison__range=[start_of_week, end_of_week])
 
             livrer_dans_la_semaine = CommandeCurrenSemaine(commandes_a_livrer_dans_la_semaine, many=True)
 
             items = Commande.objects.filter(
                 archived=False,
+                # date_livraison__range=[start_of_week, end_of_week],
                 createdBy=id,
                 # statut="terminee",
             
@@ -117,7 +126,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             start_of_next_week = today + timedelta(days=(7 - today.weekday()))
             end_of_next_week = start_of_next_week + timedelta(days=6)
    
-            commandes_a_livrer_semaine_prochaine = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_next_week, end_of_next_week])
+            commandes_a_livrer_semaine_prochaine = Commande.objects.filter(archived=False,createdBy=id,date_livraison__range=[start_of_next_week, end_of_next_week])
             livrer_semaine_prochaine = CommandeSemaineProchaineSerializer(commandes_a_livrer_semaine_prochaine, many=True)
 
 
@@ -127,7 +136,7 @@ class CommandeByUser(generics.RetrieveAPIView):
             start_of_next_month = next_month.replace(day=1)
             end_of_next_month = start_of_next_month.replace(month=start_of_next_month.month + 1, day=1) - timedelta(days=1)
 
-            commandes_mois_prochain = Commande.objects.filter(createdBy=id,date_livraison__range=[start_of_next_month, end_of_next_month])
+            commandes_mois_prochain = Commande.objects.filter(archived=False,createdBy=id,date_livraison__range=[start_of_next_month, end_of_next_month])
             livrer_mois_prochain = CommandeMoisProchainSerializer(commandes_mois_prochain, many=True)
 
    
