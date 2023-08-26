@@ -89,7 +89,7 @@ class CommandeByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
                 }, status=404)
         item.archived=True
         item.save()
-        return Response({"message": "deleted"},status=204)
+        return Response({"message": "deleted !"},status=204)
 
 
 class CommandeByUser(generics.RetrieveAPIView):
