@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("api_fewnu_compta.urls")),
     path("api/v2/", include("rest_framework.urls")),
-    path("tayeur-backoffice/", include("backoffice.urls")),
+    path("backoffice/", include("backoffice.urls")),
     path("tayeur-horraire/", include("gestion_horaire.urls")),
 
     # modification password 

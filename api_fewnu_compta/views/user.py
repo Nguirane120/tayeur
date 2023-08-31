@@ -53,6 +53,19 @@ class UserById(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
+
+    def get(self, request, id, format=None):
+        try:
+            item = User.objects.filter(archived=False).get(pk=id)
+            serializer = UserSerializer(item)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
+
     def put(self, request, id, format=None):
         try:
             item = User.objects.filter(archived=False).get(pk=id)

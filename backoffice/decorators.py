@@ -21,25 +21,24 @@ def allowed_user(allowed_roles=[]):
            if group in allowed_roles:
                return view_func(request, *args, **kwargs)
            else:
-               return redirect("users")
+               return redirect("dashboard")
         return wrapper_func
     return decorator
 
 
 
 
+# def admin_only(view_func):
+#     def wrapper_function(request, *args, **kwargs):
+#         group = None
+#         if request.user.groups.exists():
+#             group = request.user.groups.all()[0].name
 
-def admin_only(view_func):
-    def wrapper_function(request, *args, **kwargs):
-        group = None
-        if request.user.groups.exists():
-            group = request.user.groups.all()[0].name
+#         if group == 'customer':
+#             return redirect('users')
+#         elif group == 'admin':
+#             return view_func(request, *args, **kwargs)
+#         else:
+#             return # <- return response here (possibly a redirect to login page?)
 
-        if group == 'customer':
-            return redirect('users')
-        elif group == 'admin':
-            return view_func(request, *args, **kwargs)
-        else:
-            return # <- return response here (possibly a redirect to login page?)
-
-    return wrapper_function
+#     return wrapper_function
