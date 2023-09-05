@@ -13,8 +13,12 @@
                     <p>TELEPHONE: {{user.phone}}</p>
                     <p>ADRESSE: {{user.adresse}}</p>
                     <div class="d-flex justify-content-center">
-
-                        <a href="{% url 'delete-user' user.id %}" class="text-white bg-danger text-decoration-none">supprimer</a>
+                        {% if user.archived %}
+                        <p class="fs-14 bg-warning p-3 text-light">cette utilisateur a ete archivee</p>
+                        {% else %}
+                        <a href="{% url 'delete-user' user.id %}" class="btn btn-danger
+                         text-decoration-none">Archiver</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

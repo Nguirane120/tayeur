@@ -30,9 +30,10 @@ def userDetail(request, id):
 @login_required
 @user_passes_test(is_admin)
 def deleteUser(request, id):
-        user = User.objects.get(id=id)
+        user = User.objects.filter(archived=False).get(id=id)
         if request.method == "POST":
-            user.delete()
+            user.archived =True
+            user.save()
             messages.success(request, "Utilisateur " + user.firstName + " supprime avec success ")
             return redirect('users')
         context = {"user":user}
