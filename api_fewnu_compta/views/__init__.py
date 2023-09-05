@@ -12,4 +12,12 @@ from .depense_article import *
 from .company import *
 from .mail import *
 from .statistic import *
+from .album import *
+from .photos import *
+from .commande import *
+from .transaction import *
+from .entree import *
+from .profile import *
+from .parametre import *
+# from .reset_password import *
 # from .cookies import *

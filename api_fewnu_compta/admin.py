@@ -9,7 +9,12 @@ from .models import Depense
 from .models import Article
 from .models import DepenseArticle
 from .models import Company
-# Register your models here.
+from .models import Employee
+from .models import Paiement
+from .models import Album
+from .models import Photo
+from .models import Profile
+from .models import Parametre
 
 class UserAdmin(admin.ModelAdmin):
     pass
@@ -41,6 +46,11 @@ class DepenseArticleAdmin(admin.ModelAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     pass
 
+class AlbumAdmin(admin.ModelAdmin):
+    pass
+
+class PhotoAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Customer, CustomerAdmin)
@@ -52,3 +62,11 @@ admin.site.register(Depense, DepenseAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(DepenseArticle, DepenseArticleAdmin)
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(Album, AlbumAdmin)
+admin.site.register(Photo, PhotoAdmin)
+admin.site.register(Employee)
+admin.site.register(Paiement)
+admin.site.register(Commande)
+admin.site.register(Transaction)
+admin.site.register(Profile)
+admin.site.register(Parametre)

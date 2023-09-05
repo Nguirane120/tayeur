@@ -1,0 +1,55 @@
+<ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
+       
+        <div class="sidebar-brand-text mx-3">Tayeur Gestion</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'dashboard' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+  
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item active">
+        <a class="nav-link  collapsed" href="{% url 'users' %}">
+            <i class="fas fa-user fa-2x "></i>
+            <span>Utilisateurs</span>
+        </a>
+      
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link  collapsed" href="{% url 'clients' %}">
+            <i class="fas fa-regular fa-people-arrows"></i>
+            <span>Clients</span>
+        </a>
+      
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link collapsed" href="{% url 'commandes' %}">
+            <i class="fas fa-clipboard-list fa-2x"></i>
+            <span>Commandes</span>
+        </a>
+      
+    </li>
+
+
+
+    <!-- Divider -->
+   
+
+ 
+
+</ul>

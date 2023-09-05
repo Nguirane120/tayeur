@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
-
+from api_fewnu_compta.models import User 
 
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -27,14 +27,22 @@ class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
-        email = request.data.get("email", "")
-        password = request.data.get("password", "")
-
-        if not email or not password:
-            return Response(data={"message": "Both email and password are required to connect"},status=400)
+        # email = request.data["email"]
+        phone = request.data["phone"]
+        password = request.data["password"]
+        
+        if not password:
+            return Response(data={"message": "Both identifiant and password are required to connect"},status=400)
         else:
             try:
-                user = authenticate(request, email=email, password=password)
+                if phone :
+                    # userData = User.objects.get(phone=phone)
+                    # print("user data in phone", userData)
+                    user = authenticate(request, phone=phone, password=password)
+                # elif email :
+                #     user = authenticate(request, email=email, password=password)
+                #     print("user data in email")
+                # print("user",user)
                 if user is not None:
                     login(request, user)
                     # Redirect to a success page.
@@ -48,14 +56,14 @@ class LoginView(generics.CreateAPIView):
                             'firstName': user.firstName,
                             'lastName': user.lastName,
                             'phone': user.phone,
-                            'email':user.email,
+                            # 'email':user.email,
                             'user_type':user.user_type,
                         }
                         return Response(response_data)   
                 else:
-                    return Response(data={"message": "Votre email ou mot de passe est incorrect"},status=401)
+                    return Response(data={"message": "Votre numero de telephone ou mot de passe est incorrect"},status=401)
             except User.DoesNotExist:
-                return Response(data={"message": "Votre email n'existe pas"},status=401)
+                return Response(data={"message": "Ce numero de telephone n'existe pas"},status=401)
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     def get(self, request, format=None):

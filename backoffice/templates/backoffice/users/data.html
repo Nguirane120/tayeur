@@ -1,0 +1,78 @@
+<div class="card shadow mb-4">
+
+
+
+  <div class="card-body">
+
+      <div class="table-responsive">
+
+          <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+
+              <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Prenom</th>
+                    <th>Nom</th>
+                    <th>Telephone</th>
+                    <th>Adresse</th>
+                    {% comment %} <th>Email</th> {% endcomment %}
+
+                    <th>Date d'inscription</th> 
+                    <td>Actions</td>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                  {% for user in users %}
+
+                  <tr>
+
+                      <td>{{user.id}}</td>
+
+                      <td>{{user.firstName}}</td>
+                      <td>{{user.lastName}}</td>
+
+                      <td>{{user.phone}}</td>
+                      
+                      <td>{{user.adresse}}</td>
+                      <td>{{user.date_joined}}</td>
+
+                      {% comment %} <td>{{ user.date_joinde }}</td> {% endcomment %}
+
+                      <!-- <td>2011/04/25</td>
+
+                      <td>2011/04/25</td> -->
+
+                      
+
+                        
+
+                        <td class='text-center'>
+
+                            <a href="{% url 'user-detail' user.id %}" class="p-4"><i class="fas fa-eye text-primary"></i></a>
+
+                            {% comment %} <a href=""><i class="fas fa-trash text-danger"></i></a> {% endcomment %}
+
+                          </td> 
+
+                    
+
+                  </tr>
+
+                  {% endfor %}
+
+              </tbody>
+
+          </table>
+
+      </div>
+
+  </div>
+
+</div>

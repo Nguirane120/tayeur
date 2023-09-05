@@ -1,0 +1,84 @@
+<div class="card shadow mb-4">
+
+
+
+    <div class="card-body">
+  
+        <div class="table-responsive">
+  
+            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+  
+                <thead>
+  
+                  <tr>
+  
+                      <th>ID</th>
+  
+                      <th>Nom Complet</th>
+                      <th>Telephone</th>
+                      <th>Sexe</th>
+                      <th>Pays</th>
+                      <th>Ville</th>
+                      <th>Adresse</th>
+                      <th>Cree par </th>
+                      <th>Date creation </th>
+  
+                      {% comment %} <th>Actions</th>  {% endcomment %}
+  
+                  </tr>
+  
+                </thead>
+  
+                <tbody>
+  
+                    {% for client in clients %}
+  
+                    <tr>
+  
+                        <td>{{client.id}}</td>
+  
+                        <td>{{client.nom_complet}}</td>
+                        <td>{{client.telephone}}</td>
+                        <td>{{client.sexe}}</td>
+                        <td>{{client.pays}}</td>
+            
+                         <td>{{client.Ville}}</td>
+                         <td>{{client.adresse}}</td>
+                         <td>{{client.createdBy}}</td>
+                         <td>{{client.created_at}}</td>
+                 
+                       
+  
+                        {% comment %} <td>{{ user.date_joinde }}</td> {% endcomment %}
+  
+                        <!-- <td>2011/04/25</td>
+  
+                        <td>2011/04/25</td> -->
+  
+                        
+  
+                          
+  
+                          {% comment %} <td class='text-center'>
+  
+                              <a href="{% url 'update-user' user.id %}" class="p-4"><i class="fas fa-edit text-primary"></i></a>
+  
+                              <a href="{% url 'delete-user' user.id %}"><i class="fas fa-trash text-danger"></i></a>
+  
+                            </td> {% endcomment %}
+  
+                      
+  
+                    </tr>
+  
+                    {% endfor %}
+  
+                </tbody>
+  
+            </table>
+  
+        </div>
+  
+    </div>
+  
+  </div>
