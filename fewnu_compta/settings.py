@@ -10,7 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import dj_database_url
+# from firebase_admin import credentials
 import os
+
+from dotenv import load_dotenv
+import django
+import os
+import json
+# import firebase_admin
+# from firebase_admin import credentials
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +36,14 @@ SECRET_KEY = 'yjbae$vgtfdjk3y1)er)m4n(*9)4f528owz8*vm6p*du3qj(+p'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+# cred = credentials.Certificate(os.path.join(BASE_DIR, "firebase/credentials.json"))
+# firebase_admin.initialize_app(cred)
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fewnu_compta.settings")
+# django.setup()
+
+
+
 
 # Application definition
 
@@ -44,12 +62,15 @@ INSTALLED_APPS = [
     'api_fewnu_compta.apps.ApiFewnuComptaConfig',
     'whitenoise.runserver_nostatic',
     "corsheaders",
+    "backoffice",
+    'django_extensions',
+    "gestion_horaire",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -59,6 +80,25 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
+GRAPH_MODELS = {
+  'app_labels': ["api_fewnu_compta.apps.ApiFewnuComptaConfig"],
+}
+
+
+
+
+
+
+# cred = credentials.Certificate(os.path.join(BASE_DIR, "firebase/credentials.json"))
+# firebase_admin.initialize_app(cred)
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fewnu_compta.settings")
+# django.setup()
 
 # CORS_ALLOWED_ORIGINS = [
 #     "https://example.com",
@@ -88,11 +128,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 # for herokuapp
 # DATABASES = { 'default': dj_database_url.config() }
-
 
 # for local 
 DATABASES = {
@@ -104,6 +144,7 @@ DATABASES = {
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ['DB_PORT'],
     }
+    
 }
 
 # for docker 
@@ -224,12 +265,13 @@ MIDDLEWARE_CLASSES = [
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 
-REST_FRAMEWORK  ={
-# anyone can visit it and input data
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-   ]
-}
+# REST_FRAMEWORK  ={
+# # anyone can visit it and input data
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny'
+#    ]
+# }
+
 
 # SMTP Configuration 
 

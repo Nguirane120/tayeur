@@ -1,4 +1,10 @@
 /.env
 /.venv
 venv/
+<<<<<<< HEAD
 .env
+=======
+.env
+venv
+env
+>>>>>>> tayeur_backoffice

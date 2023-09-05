@@ -53,7 +53,7 @@ def CustomerExportFileView(request):
 
     return response
 
-class CustomerAPIView(generics.CreateAPIView):
+class CustomerAPIView(generics.ListCreateAPIView):
     """
     POST api/v1/client/
     """
@@ -67,19 +67,14 @@ class CustomerAPIView(generics.CreateAPIView):
             return Response(serializer.data,status=201)
         return Response(serializer.errors, status=400)
 
-class CustomerAPIListView(generics.CreateAPIView):
-    """
-    GET api/v1/clients/
-    """
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
-
     def get(self, request, format=None):
-        items = Customer.objects.filter(archived=False).order_by('pk')
+        items = Customer.objects.filter(archived=False).all()
         serializer = CustomerSerializer(items, many=True)
         return Response({"count": items.count(),"data":serializer.data})
 
-class CustomerByIdAPIView(generics.CreateAPIView):
+
+
+class CustomerByIdAPIView(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (
     #     permissions.IsAuthenticated,
     # )
@@ -124,3 +119,21 @@ class CustomerByIdAPIView(generics.CreateAPIView):
         item.archived=True
         item.save()
         return Response({"message": "deleted"},status=204)
+
+
+class CustomerByUser(generics.RetrieveAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    # permission_classes = []
+
+    def get(self, request, id, format=None):
+        try:
+            item = Customer.objects.filter(archived=False).filter(createdBy=id)
+        
+            serializer = CustomerSerializer(item,many=True)
+            return Response(serializer.data)
+        except Customer.DoesNotExist:
+            return Response({
+                "status": "failure",
+                "message": "no such item with this id",
+                }, status=404)
