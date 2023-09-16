@@ -3,10 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from ..decorators import  unauthenticated_user, allowed_user
-
-
-
+# from ..decorators import  unauthenticated_user, allowed_user
 
 
 

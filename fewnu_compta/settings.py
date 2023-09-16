@@ -136,7 +136,7 @@ WSGI_APPLICATION = 'fewnu_compta.wsgi.application'
 
 # for local 
 DATABASES = {
-   'default': {
+  'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['DB_NAME'],
         'USER': os.environ['DB_USER'],
