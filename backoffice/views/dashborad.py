@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from api_fewnu_compta.models import *
 from django.template import loader
-from ..decorators import  unauthenticated_user, allowed_user
+# from ..decorators import  unauthenticated_user, allowed_user
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required, user_passes_test
